@@ -131,23 +131,24 @@ class _EditPageState extends State<EditPage> {
     return ListView.builder(
       shrinkWrap: true,
       itemCount: decisionControllers.length,
+      physics: const ClampingScrollPhysics(),
       itemBuilder: (context, index) {
         TextEditingController currentController = decisionControllers[index];
 
         return Row(children: [
-          TextFormField(
+          Expanded(
+              child: TextFormField(
             controller: currentController,
             maxLength: 30,
-            decoration: const InputDecoration(
-                constraints: BoxConstraints.expand(width: 320, height: 50),
-                hintText: "Add a decision option"),
+            decoration:
+                const InputDecoration(hintText: "Add a decision option"),
             validator: (String? value) {
               if (value == null || value.isEmpty) {
                 return "Please input a decision option";
               }
               return null;
             },
-          ),
+          )),
           IconButton(
               onPressed: () {
                 if (decisionControllers.length <= 2) return;
