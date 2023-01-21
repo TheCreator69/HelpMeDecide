@@ -1,17 +1,10 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DecisionMaker {
-  DecisionMaker({this.id = -1, required this.title}) {
-    List<int> takenIDs = decisionMakers.map((maker) => maker.id).toList();
-
-    int potentialID = -1;
-    while (potentialID == -1 || takenIDs.contains(potentialID)) {
-      potentialID = Random().nextInt(1000000);
-    }
-    id = potentialID;
-  }
+  DecisionMaker({required this.id, required this.title});
 
   late int id;
   String title;
@@ -23,6 +16,10 @@ class DecisionMaker {
 
   List<String> getDecisions() {
     return _decisions;
+  }
+
+  String getDecisionAt(int index) {
+    return _decisions[index];
   }
 
   void removeDecisionByIndex(int index) {
@@ -40,24 +37,70 @@ class DecisionMaker {
   }
 }
 
-void addDecisionMaker(String title, List<String> decisions) {
-  DecisionMaker newDecisionMaker = createDecisionMaker(title, decisions);
-  decisionMakers.add(newDecisionMaker);
-}
+class DecisionMakerListModel extends ChangeNotifier {
+  List<DecisionMaker> _decisionMakers = [];
 
-DecisionMaker createDecisionMaker(String title, List<String> decisions) {
-  DecisionMaker decisionMaker = DecisionMaker(title: title);
-  decisionMaker._decisions = decisions;
-  return decisionMaker;
-}
+  void setDecisionMakers(List<DecisionMaker> decisionMakers) {
+    _decisionMakers = decisionMakers;
+    notifyListeners();
+  }
 
-void removeDecisionMaker(DecisionMaker decisionMaker) {
-  decisionMakers.remove(decisionMaker);
+  void addDecisionMaker(DecisionMaker maker) {
+    _decisionMakers.add(maker);
+    notifyListeners();
+  }
+
+  void addDecisionMakerByInfo(String title, List<String> decisions) {
+    DecisionMaker newDecisionMaker = createDecisionMaker(title, decisions);
+    _decisionMakers.add(newDecisionMaker);
+    notifyListeners();
+  }
+
+  DecisionMaker createDecisionMaker(String title, List<String> decisions) {
+    List<int> takenIDs = _getTakenIDs();
+
+    int id = -1;
+    while (id == -1 || takenIDs.contains(id)) {
+      id = Random().nextInt(1000000);
+    }
+
+    DecisionMaker decisionMaker = DecisionMaker(id: id, title: title);
+    decisionMaker._decisions = decisions;
+    return decisionMaker;
+  }
+
+  void changeDecisionMaker(int id, String title, List<String> decisions) {
+    List<int> takenIDs = _getTakenIDs();
+    if (!takenIDs.contains(id)) {
+      return;
+    }
+
+    DecisionMaker maker = DecisionMaker(id: id, title: title);
+    maker._decisions = decisions;
+    int index = _decisionMakers.indexWhere((element) => element.id == id);
+    _decisionMakers[index] = maker;
+    notifyListeners();
+  }
+
+  void removeDecisionMaker(DecisionMaker decisionMaker) {
+    _decisionMakers.remove(decisionMaker);
+    notifyListeners();
+  }
+
+  DecisionMaker getDecisionMakerAt(int index) {
+    return _decisionMakers[index];
+  }
+
+  int getAmountOfDecisionMakers() {
+    return _decisionMakers.length;
+  }
+
+  List<int> _getTakenIDs() {
+    return _decisionMakers.map((maker) => maker.id).toList();
+  }
 }
 
 const idKey = "ids";
-
-List<DecisionMaker> decisionMakers = [];
 
 Future<List<DecisionMaker>> loadDecisionMakers() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -83,27 +126,15 @@ Future<List<DecisionMaker>> loadDecisionMakers() async {
   return decisionMakers;
 }
 
-Future<void> saveDecisionMakers(List<DecisionMaker> decisionMakers) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-
-  List<String> decisionMakerIDs = [];
-
-  for (DecisionMaker decisionMaker in decisionMakers) {
-    decisionMakerIDs.add(decisionMaker.id.toString());
-    await saveDecisionMakerInfo(decisionMaker);
-  }
-
-  await prefs.setStringList(idKey, decisionMakerIDs);
-}
-
 Future<void> saveDecisionMaker(DecisionMaker decisionMaker) async {
-  await saveDecisionMakerID(decisionMaker);
-  await saveDecisionMakerInfo(decisionMaker);
-}
-
-Future<void> saveDecisionMakerID(DecisionMaker decisionMaker) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
+  await _saveDecisionMakerID(decisionMaker, prefs);
+  await _saveDecisionMakerInfo(decisionMaker, prefs);
+}
+
+Future<void> _saveDecisionMakerID(
+    DecisionMaker decisionMaker, SharedPreferences prefs) async {
   String decisionMakerID = decisionMaker.id.toString();
 
   List<String>? decisionMakerIDs = prefs.getStringList(idKey) ?? [];
@@ -114,10 +145,20 @@ Future<void> saveDecisionMakerID(DecisionMaker decisionMaker) async {
   await prefs.setStringList(idKey, decisionMakerIDs);
 }
 
-Future<void> saveDecisionMakerInfo(DecisionMaker decisionMaker) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-
+Future<void> _saveDecisionMakerInfo(
+    DecisionMaker decisionMaker, SharedPreferences prefs) async {
   await prefs.setString("d_${decisionMaker.id}_title", decisionMaker.title);
   await prefs.setStringList(
       "d_${decisionMaker.id}_decisions", decisionMaker._decisions);
+}
+
+Future<void> saveRemovalOfDecisionMaker(DecisionMaker decisionMaker) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  List<String>? decisionMakerIDs = prefs.getStringList(idKey) ?? [];
+  decisionMakerIDs.remove(decisionMaker.id.toString());
+  await prefs.setStringList(idKey, decisionMakerIDs);
+
+  prefs.remove("d_${decisionMaker.id}_title");
+  prefs.remove("d_${decisionMaker.id}_decisions");
 }
