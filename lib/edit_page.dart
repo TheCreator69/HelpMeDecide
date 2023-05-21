@@ -7,15 +7,19 @@ class EditPage extends StatefulWidget {
   const EditPage(
       {super.key,
       required this.decisionMaker,
-      required this.createDecisionMaker});
+      required this.isCreatingDecisionMaker});
 
   final DecisionMaker decisionMaker;
-  final bool createDecisionMaker;
+  final bool isCreatingDecisionMaker;
 
-  String getActionText() {
-    return createDecisionMaker
+  String getPageTitleText() {
+    return isCreatingDecisionMaker
         ? "Create Decision Maker"
         : "Edit Decision Maker";
+  }
+
+  String getFinishButtonText() {
+    return isCreatingDecisionMaker ? "Finish Creating" : "Finish Editing";
   }
 
   @override
@@ -61,7 +65,7 @@ class _EditPageState extends State<EditPage> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(widget.getActionText())),
+      appBar: AppBar(title: Text(widget.getPageTitleText())),
       body: Center(
           child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -72,12 +76,11 @@ class _EditPageState extends State<EditPage> {
                       children: <Widget>[
                         TextFormField(
                           controller: titleController,
-                          maxLength: 40,
                           decoration: const InputDecoration(
                               hintText: "Add a decision maker title"),
                           validator: (String? value) {
                             if (value == null || value.isEmpty) {
-                              return "Please input a decision option";
+                              return "Please input a decision maker title";
                             }
                             return null;
                           },
@@ -89,7 +92,7 @@ class _EditPageState extends State<EditPage> {
                               decisionControllers.add(TextEditingController());
                               setState(() {});
                             },
-                            child: const Icon(Icons.add)),
+                            child: const Text("Add decision option")),
                         ElevatedButton(
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
@@ -99,7 +102,7 @@ class _EditPageState extends State<EditPage> {
                                       (e) => e.text,
                                     )
                                     .toList();
-                                if (widget.createDecisionMaker) {
+                                if (widget.isCreatingDecisionMaker) {
                                   DecisionMaker maker = decisionMakerList
                                       .createDecisionMaker(title, decisions);
                                   decisionMakerList.addDecisionMaker(maker);
@@ -120,7 +123,7 @@ class _EditPageState extends State<EditPage> {
                                 Navigator.of(context).pop();
                               }
                             },
-                            child: Text(widget.getActionText()))
+                            child: Text(widget.getFinishButtonText()))
                       ],
                     ))
               ]))),
@@ -139,7 +142,6 @@ class _EditPageState extends State<EditPage> {
           Expanded(
               child: TextFormField(
             controller: currentController,
-            maxLength: 30,
             decoration:
                 const InputDecoration(hintText: "Add a decision option"),
             validator: (String? value) {

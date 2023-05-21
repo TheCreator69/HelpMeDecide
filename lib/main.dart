@@ -56,7 +56,7 @@ class HomePage extends StatelessWidget {
           Navigator.of(context).push(MaterialPageRoute(builder: ((context) {
             return EditPage(
               decisionMaker: decisionMakerList.createDecisionMaker("", []),
-              createDecisionMaker: true,
+              isCreatingDecisionMaker: true,
             );
           })));
         }),
@@ -98,7 +98,7 @@ class _DecisionMakerListViewState extends State<DecisionMakerListView> {
                         return EditPage(
                           decisionMaker:
                               decisionMakerList.getDecisionMakerAt(index),
-                          createDecisionMaker: false,
+                          isCreatingDecisionMaker: false,
                         );
                       })));
                     } else if (item == DecisionMakerPopupItem.delete) {
@@ -114,11 +114,15 @@ class _DecisionMakerListViewState extends State<DecisionMakerListView> {
                     return <PopupMenuEntry<DecisionMakerPopupItem>>[
                       const PopupMenuItem<DecisionMakerPopupItem>(
                         value: DecisionMakerPopupItem.edit,
-                        child: Text("Edit decision maker"),
+                        child: ListTile(
+                            leading: Icon(Icons.mode_edit),
+                            title: Text("Edit decision maker")),
                       ),
                       const PopupMenuItem<DecisionMakerPopupItem>(
                         value: DecisionMakerPopupItem.delete,
-                        child: Text("Delete decision maker"),
+                        child: ListTile(
+                            leading: Icon(Icons.delete),
+                            title: Text("Delete decision maker")),
                       )
                     ];
                   },

@@ -29,6 +29,10 @@ class DecisionMaker {
     _decisions.removeAt(index);
   }
 
+  int getAmountOfDecisions() {
+    return _decisions.length;
+  }
+
   String getRandomDecision() {
     if (_decisions.isEmpty) {
       return "";
