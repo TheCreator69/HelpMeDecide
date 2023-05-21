@@ -69,7 +69,8 @@ class _EditPageState extends State<EditPage> {
       body: Center(
           child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: ListView(children: [
+              child: Scrollbar(
+                  child: ListView(children: [
                 Form(
                     key: _formKey,
                     child: Column(
@@ -126,7 +127,7 @@ class _EditPageState extends State<EditPage> {
                             child: Text(widget.getFinishButtonText()))
                       ],
                     ))
-              ]))),
+              ])))),
     );
   }
 

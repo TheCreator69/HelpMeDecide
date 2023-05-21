@@ -43,14 +43,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Decide what to decide"),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: const <Widget>[
-            DecisionMakerListView(),
-          ],
-        ),
-      ),
+      body: const Scrollbar(child: DecisionMakerListView()),
       floatingActionButton: FloatingActionButton(
         onPressed: (() {
           Navigator.of(context).push(MaterialPageRoute(builder: ((context) {
@@ -76,16 +69,16 @@ class DecisionMakerListView extends StatefulWidget {
 }
 
 class _DecisionMakerListViewState extends State<DecisionMakerListView> {
-  late NotificationListener test;
-
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
         animation: decisionMakerList,
         builder: ((context, child) {
           return ListView.builder(
+            shrinkWrap: true,
             padding: const EdgeInsets.all(8.0),
             itemCount: decisionMakerList.getAmountOfDecisionMakers(),
+            physics: const ClampingScrollPhysics(),
             itemBuilder: (context, index) {
               return ListTile(
                 leading: const Icon(Icons.question_mark_rounded),
@@ -137,7 +130,6 @@ class _DecisionMakerListViewState extends State<DecisionMakerListView> {
                 },
               );
             },
-            shrinkWrap: true,
           );
         }));
   }
