@@ -15,6 +15,7 @@ class DecidePage extends StatefulWidget {
 
 class _DecidePageState extends State<DecidePage> {
   String decision = "Decision will appear here...";
+  String decisionAction = "Decide!";
 
   List<int> previousDecisions = [];
 
@@ -43,7 +44,9 @@ class _DecidePageState extends State<DecidePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(widget.decisionMaker.title)),
+        appBar: AppBar(
+          title: Text(widget.decisionMaker.title),
+        ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -51,25 +54,25 @@ class _DecidePageState extends State<DecidePage> {
             Expanded(
               child: Container(),
             ),
-            Container(
-                margin: const EdgeInsets.all(16.0),
-                child: Text(
-                  decision,
-                  style: const TextStyle(fontSize: 24),
-                  textAlign: TextAlign.center,
-                )),
+            Text(
+              decision,
+              style: const TextStyle(fontSize: 24),
+              textAlign: TextAlign.center,
+            ),
             Expanded(
               child: Container(),
             ),
             ElevatedButton(
                 onPressed: () {
                   makeDecision();
+                  decisionAction = "Decide again!";
                 },
                 style: ButtonStyle(
+                    elevation: MaterialStateProperty.all(4.0),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         const RoundedRectangleBorder(
                             borderRadius: BorderRadius.zero))),
-                child: const Text("Decide!"))
+                child: Text(decisionAction)),
           ],
         ));
   }

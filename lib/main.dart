@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:helpmedecide/about.dart';
 
 import 'decision_makers.dart';
 
@@ -23,10 +24,14 @@ class DecisionApp extends StatelessWidget {
       title: "Help me Decide",
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        useMaterial3: true,
         colorScheme: const ColorScheme.light(),
+        brightness: Brightness.light,
       ),
       darkTheme: ThemeData(
+        useMaterial3: true,
         colorScheme: const ColorScheme.dark(),
+        brightness: Brightness.dark,
       ),
       themeMode: ThemeMode.system,
       home: const HomePage(),
@@ -42,6 +47,14 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Decide what to decide"),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const AboutPage()));
+              },
+              icon: const Icon(Icons.info))
+        ],
       ),
       body: const Scrollbar(child: DecisionMakerListView()),
       floatingActionButton: FloatingActionButton(
@@ -55,6 +68,7 @@ class HomePage extends StatelessWidget {
         }),
         child: const Icon(Icons.add),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
@@ -80,55 +94,68 @@ class _DecisionMakerListViewState extends State<DecisionMakerListView> {
             itemCount: decisionMakerList.getAmountOfDecisionMakers(),
             physics: const ClampingScrollPhysics(),
             itemBuilder: (context, index) {
-              return ListTile(
-                leading: const Icon(Icons.question_mark_rounded),
-                title: Text(decisionMakerList.getDecisionMakerAt(index).title),
-                trailing: PopupMenuButton<DecisionMakerPopupItem>(
-                  onSelected: (DecisionMakerPopupItem item) {
-                    if (item == DecisionMakerPopupItem.edit) {
+              return Card(
+                  elevation: 2.0,
+                  child: ListTile(
+                    leading: const Icon(Icons.question_mark_rounded),
+                    title:
+                        Text(decisionMakerList.getDecisionMakerAt(index).title),
+                    horizontalTitleGap: 0.0,
+                    trailing: PopupMenuButton<DecisionMakerPopupItem>(
+                      onSelected: (DecisionMakerPopupItem item) {
+                        if (item == DecisionMakerPopupItem.edit) {
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: ((context) {
+                            return EditPage(
+                              decisionMaker:
+                                  decisionMakerList.getDecisionMakerAt(index),
+                              isCreatingDecisionMaker: false,
+                            );
+                          })));
+                        } else if (item == DecisionMakerPopupItem.delete) {
+                          DecisionMaker maker =
+                              decisionMakerList.getDecisionMakerAt(index);
+
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content:
+                                Text("Removed decision maker '${maker.title}'"),
+                            duration: const Duration(seconds: 3),
+                          ));
+
+                          saveRemovalOfDecisionMaker(maker);
+                          setState(() {
+                            decisionMakerList.removeDecisionMaker(maker);
+                          });
+                        }
+                      },
+                      itemBuilder: (BuildContext context) {
+                        return <PopupMenuEntry<DecisionMakerPopupItem>>[
+                          const PopupMenuItem<DecisionMakerPopupItem>(
+                            value: DecisionMakerPopupItem.edit,
+                            child: ListTile(
+                                leading: Icon(Icons.mode_edit),
+                                title: Text("Edit decision maker")),
+                          ),
+                          const PopupMenuItem<DecisionMakerPopupItem>(
+                              value: DecisionMakerPopupItem.delete,
+                              child: ListTile(
+                                leading: Icon(Icons.delete,
+                                    color: Color(0xFFFF3300)),
+                                title: Text("Delete decision maker",
+                                    style: TextStyle(color: Color(0xFFFF3300))),
+                              )),
+                        ];
+                      },
+                    ),
+                    onTap: () {
                       Navigator.of(context)
                           .push(MaterialPageRoute(builder: ((context) {
-                        return EditPage(
-                          decisionMaker:
-                              decisionMakerList.getDecisionMakerAt(index),
-                          isCreatingDecisionMaker: false,
-                        );
+                        return DecidePage(
+                            decisionMaker:
+                                decisionMakerList.getDecisionMakerAt(index));
                       })));
-                    } else if (item == DecisionMakerPopupItem.delete) {
-                      DecisionMaker maker =
-                          decisionMakerList.getDecisionMakerAt(index);
-                      saveRemovalOfDecisionMaker(maker);
-                      setState(() {
-                        decisionMakerList.removeDecisionMaker(maker);
-                      });
-                    }
-                  },
-                  itemBuilder: (BuildContext context) {
-                    return <PopupMenuEntry<DecisionMakerPopupItem>>[
-                      const PopupMenuItem<DecisionMakerPopupItem>(
-                        value: DecisionMakerPopupItem.edit,
-                        child: ListTile(
-                            leading: Icon(Icons.mode_edit),
-                            title: Text("Edit decision maker")),
-                      ),
-                      const PopupMenuItem<DecisionMakerPopupItem>(
-                        value: DecisionMakerPopupItem.delete,
-                        child: ListTile(
-                            leading: Icon(Icons.delete),
-                            title: Text("Delete decision maker")),
-                      )
-                    ];
-                  },
-                ),
-                onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: ((context) {
-                    return DecidePage(
-                        decisionMaker:
-                            decisionMakerList.getDecisionMakerAt(index));
-                  })));
-                },
-              );
+                    },
+                  ));
             },
           );
         }));
