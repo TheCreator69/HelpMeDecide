@@ -10,12 +10,14 @@ class AboutPage extends StatelessWidget {
         body: Container(
             alignment: Alignment.center,
             padding: const EdgeInsets.all(20.0),
-            child: Column(children: const <Widget>[
-              Text(
-                "Help me Decide",
+            child: Column(children: <Widget>[
+              Expanded(child: Container()),
+              const Text(
+                "Help me Decide v1.0",
                 style: TextStyle(fontSize: 24.0),
               ),
-              Text("Copyright 2023 TheCreator"),
+              const Text("Copyright 2023 TheCreator"),
+              Expanded(child: Container()),
             ])));
   }
 }
