@@ -155,6 +155,13 @@ class _EditPageState extends State<EditPage> {
           IconButton(
               onPressed: () {
                 if (decisionControllers.length <= 2) {
+                  if (decisionControllers[index].text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content:
+                          Text("A decision maker needs at least two options!"),
+                      duration: Duration(seconds: 5),
+                    ));
+                  }
                   decisionControllers[index].text = "";
                   return;
                 }
