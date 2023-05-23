@@ -68,7 +68,7 @@ class _EditPageState extends State<EditPage> {
       appBar: AppBar(title: Text(widget.getPageTitleText())),
       body: Center(
           child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              padding: const EdgeInsets.all(20.0),
               child: Scrollbar(
                   child: ListView(children: [
                 Form(
@@ -154,7 +154,10 @@ class _EditPageState extends State<EditPage> {
           )),
           IconButton(
               onPressed: () {
-                if (decisionControllers.length <= 2) return;
+                if (decisionControllers.length <= 2) {
+                  decisionControllers[index].text = "";
+                  return;
+                }
                 decisionControllers.removeAt(index);
                 saveControllerValuesToDecisionMaker();
                 setState(() {});
