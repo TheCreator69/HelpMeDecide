@@ -56,23 +56,27 @@ class _DecidePageState extends State<DecidePage> {
             ),
             Text(
               decision,
-              style: const TextStyle(fontSize: 24),
+              style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
             Expanded(
               child: Container(),
             ),
-            ElevatedButton(
-                onPressed: () {
-                  makeDecision();
-                  decisionAction = "Decide again!";
-                },
-                style: ButtonStyle(
-                    elevation: MaterialStateProperty.all(4.0),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.zero))),
-                child: Text(decisionAction)),
+            SizedBox(
+                height: 100.0,
+                child: ElevatedButton(
+                    onPressed: () {
+                      makeDecision();
+                      decisionAction = "Decide again!";
+                    },
+                    style: ButtonStyle(
+                        elevation: MaterialStateProperty.all(4.0),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.zero))),
+                    child: Text(decisionAction,
+                        style: const TextStyle(fontSize: 24)))),
           ],
         ));
   }
