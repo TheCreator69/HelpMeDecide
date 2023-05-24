@@ -21,3 +21,4 @@ You can do almost anything you want with my source **except** distributing close
 - [The Dart programming language](https://dart.dev/)
 - [Flutter framework](https://flutter.dev/)
 - The full list of package dependencies can be found in [pubspec.yaml](/pubspec.yaml)
+- [Direction icons created by Vector Stall - Flaticon](https://www.flaticon.com/free-icons/direction)
