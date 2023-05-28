@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import 'decision_makers.dart';
+import '../model/decision_maker.dart';
 
 class DecidePage extends StatefulWidget {
   const DecidePage({super.key, required this.decisionMaker});

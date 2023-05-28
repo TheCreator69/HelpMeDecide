@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import 'decision_makers.dart';
-import 'main.dart';
+import '../model/controllers.dart';
+import '../model/decision_maker.dart';
 
 class EditPage extends StatefulWidget {
   const EditPage(
@@ -22,12 +23,6 @@ class EditPage extends StatefulWidget {
     return isCreatingDecisionMaker ? "Finish Creating" : "Finish Editing";
   }
 
-  String getFinishSnackbarText() {
-    return isCreatingDecisionMaker
-        ? "Creation successful!"
-        : "Edit successful!";
-  }
-
   @override
   State<EditPage> createState() => _EditPageState();
 }
@@ -37,6 +32,8 @@ class _EditPageState extends State<EditPage> {
 
   TextEditingController titleController = TextEditingController();
   List<TextEditingController> decisionControllers = [];
+
+  final decisionMakersController = Get.find<DecisionMakersController>();
 
   DecisionMaker getDecisionMaker() {
     return widget.decisionMaker;
@@ -126,27 +123,24 @@ class _EditPageState extends State<EditPage> {
                                   )
                                   .toList();
                               if (widget.isCreatingDecisionMaker) {
-                                DecisionMaker maker = decisionMakerList
+                                DecisionMaker maker = decisionMakersController
                                     .createDecisionMaker(title, decisions);
-                                decisionMakerList.addDecisionMaker(maker);
-                                saveDecisionMaker(maker);
+                                decisionMakersController
+                                    .addDecisionMaker(maker);
+                                Get.find<StorageController>()
+                                    .saveDecisionMaker(maker);
                               } else {
-                                decisionMakerList.changeDecisionMaker(
+                                decisionMakersController.changeDecisionMaker(
                                     widget.decisionMaker.id, title, decisions);
                                 DecisionMaker savedDecisionMaker =
                                     DecisionMaker(
                                         id: widget.decisionMaker.id,
                                         title: title);
                                 savedDecisionMaker.setDecisions(decisions);
-                                saveDecisionMaker(savedDecisionMaker);
+                                Get.find<StorageController>()
+                                    .saveDecisionMaker(savedDecisionMaker);
                               }
                               decisionControllers.map((e) => e.dispose());
-
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text(widget.getFinishSnackbarText()),
-                                duration: const Duration(seconds: 3),
-                              ));
 
                               Navigator.of(context).pop();
                             }
