@@ -17,7 +17,6 @@ class HomePage extends StatelessWidget {
     final decisionMakersController = Get.find<DecisionMakersController>();
 
     List<DecisionMaker> loadedList = storageController.loadDecisionMakers();
-    print(loadedList);
     decisionMakersController.setDecisionMakers(loadedList);
 
     return Scaffold(
