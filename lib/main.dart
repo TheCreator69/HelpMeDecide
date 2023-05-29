@@ -8,11 +8,13 @@ import 'view/home_page.dart';
 
 void main() async {
   await GetStorage.init();
-  runApp(const DecisionApp());
+  runApp(DecisionApp());
 }
 
 class DecisionApp extends StatelessWidget {
-  const DecisionApp({super.key});
+  DecisionApp({super.key});
+
+  final themeController = Get.put(ThemeController());
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class DecisionApp extends StatelessWidget {
         colorScheme: const ColorScheme.dark(),
         brightness: Brightness.dark,
       ),
-      themeMode: ThemeMode.system,
+      themeMode: themeController.loadThemeMode(),
       home: const HomePage(),
     );
   }

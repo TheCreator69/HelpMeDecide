@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -126,5 +128,55 @@ class StorageController extends GetxController {
 
     await _box.remove("d_${decisionMaker.id}_title");
     await _box.remove("d_${decisionMaker.id}_decisions");
+  }
+}
+
+class ThemeController extends GetxController {
+  final GetStorage _box = GetStorage();
+
+  final String _themeKey = "theme";
+  Rx<ThemeMode> currentThemeMode = ThemeMode.system.obs;
+
+  ThemeMode loadThemeMode() {
+    final String themeValue = _box.read(_themeKey) ?? "system";
+    switch (themeValue) {
+      case "system":
+        currentThemeMode.value = ThemeMode.system;
+        break;
+      case "light":
+        currentThemeMode.value = ThemeMode.light;
+        break;
+      case "dark":
+        currentThemeMode.value = ThemeMode.dark;
+        break;
+      default:
+        currentThemeMode.value = ThemeMode.system;
+        break;
+    }
+    return currentThemeMode.value;
+  }
+
+  void saveThemeMode(ThemeMode themeMode) {
+    String themeValue = "";
+    switch (themeMode) {
+      case ThemeMode.system:
+        themeValue = "system";
+        break;
+      case ThemeMode.light:
+        themeValue = "light";
+        break;
+      case ThemeMode.dark:
+        themeValue = "dark";
+        break;
+      default:
+        themeValue = "system";
+        break;
+    }
+    _box.write(_themeKey, themeValue);
+  }
+
+  void applyThemeMode(ThemeMode themeMode) {
+    Get.changeThemeMode(themeMode);
+    currentThemeMode.value = themeMode;
   }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'about_page.dart';
 import 'decide_page.dart';
 import 'edit_page.dart';
+import 'settings_page.dart';
 
 import '../model/controllers.dart';
 import '../model/decision_maker.dart';
@@ -25,9 +25,9 @@ class HomePage extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
-                Get.to(() => const AboutPage());
+                Get.to(() => SettingsPage());
               },
-              icon: const Icon(Icons.info))
+              icon: const Icon(Icons.settings))
         ],
       ),
       body: const DecisionMakerListView(),
