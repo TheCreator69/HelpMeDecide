@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:intl/intl.dart';
 
 import 'decision_maker.dart';
 
@@ -177,5 +179,60 @@ class ThemeController extends GetxController {
   void applyThemeMode(ThemeMode themeMode) {
     Get.changeThemeMode(themeMode);
     currentThemeMode.value = themeMode;
+  }
+}
+
+class LocaleController extends GetxController {
+  final GetStorage _box = GetStorage();
+  final String _localeKey = "locale";
+  final String _localeModeKey = "localeMode";
+
+  Rx<Locale> currentLocale = (Get.deviceLocale ?? const Locale("en", "US")).obs;
+  Rx<String> localeMode = "system".obs;
+
+  Locale loadLocale() {
+    final bool isUsingSystemLocale = _box.read(_localeModeKey);
+    if (isUsingSystemLocale) {
+      localeMode.value = isUsingSystemLocale ? "system" : "custom";
+      return currentLocale.value;
+    }
+
+    final String loadedLocaleInfo = _box.read(_localeKey) ?? "en";
+    currentLocale.value = Locale(loadedLocaleInfo);
+    return currentLocale.value;
+  }
+
+  void saveLocale(Locale locale) {
+    String localeValue = locale.languageCode;
+    _box.write(_localeKey, localeValue);
+  }
+
+  void applyLocale(Locale locale) {
+    Intl.defaultLocale = locale.toLanguageTag();
+    currentLocale.value = locale;
+  }
+
+  void saveIsUsingSystemLocale(bool isUsingSystemLocale) {
+    _box.write(_localeModeKey, isUsingSystemLocale);
+  }
+
+  void applyIsUsingSystemLocale(bool isUsingSystemLocale) {
+    isUsingSystemLocale
+        ? Get.locale = Get.deviceLocale
+        : Get.locale = currentLocale.value;
+    localeMode.value = isUsingSystemLocale ? "system" : "custom";
+  }
+
+  String getLocaleDisplayText(Locale locale, BuildContext context) {
+    final Map<Locale, String> localeToDisplayText = {
+      const Locale("en", "Us"):
+          AppLocalizations.of(context)!.settingsPageLanguageEnglish,
+      const Locale("en"):
+          AppLocalizations.of(context)!.settingsPageLanguageEnglish,
+      const Locale("de"):
+          AppLocalizations.of(context)!.settingsPageLanguageGerman,
+    };
+    return localeToDisplayText[locale] ??
+        AppLocalizations.of(context)!.settingsPageLanguageEnglish;
   }
 }

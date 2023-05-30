@@ -16,6 +16,7 @@ class DecisionApp extends StatelessWidget {
   DecisionApp({super.key});
 
   final themeController = Get.put(ThemeController());
+  final localeController = Get.put(LocaleController());
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +37,7 @@ class DecisionApp extends StatelessWidget {
       themeMode: themeController.loadThemeMode(),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
+      locale: localeController.currentLocale.value,
       onGenerateTitle: (context) =>
           AppLocalizations.of(context)!.appDescription,
       home: const HomePage(),

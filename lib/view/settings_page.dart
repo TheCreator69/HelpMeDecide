@@ -8,6 +8,7 @@ class SettingsPage extends StatelessWidget {
   SettingsPage({super.key});
 
   final themeController = Get.find<ThemeController>();
+  final localeController = Get.find<LocaleController>();
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +53,57 @@ class SettingsPage extends StatelessWidget {
                     themeController.applyThemeMode(value ?? ThemeMode.system);
                     themeController.saveThemeMode(value ?? ThemeMode.system);
                   }),
+            ),
+            Text(AppLocalizations.of(context)!.settingsPageLanguageSectionTitle,
+                style: const TextStyle(fontSize: 14)),
+            Obx(
+              () => RadioListTile(
+                title: Text(AppLocalizations.of(context)!
+                    .settingsPageLanguageOptionSystem),
+                value: "system",
+                groupValue: localeController.localeMode.value,
+                onChanged: (value) {
+                  localeController.applyIsUsingSystemLocale(true);
+                  localeController.saveIsUsingSystemLocale(true);
+                },
+              ),
+            ),
+            Obx(
+              () => RadioListTile(
+                title: Text(AppLocalizations.of(context)!
+                    .settingsPageLanguageOptionCustom),
+                value: "custom",
+                groupValue: localeController.localeMode.value,
+                onChanged: (value) {
+                  localeController.applyIsUsingSystemLocale(false);
+                  localeController.saveIsUsingSystemLocale(false);
+                },
+              ),
+            ),
+            Obx(
+              () => DropdownButton<Locale>(
+                value: localeController.currentLocale.value,
+                onChanged: localeController.localeMode.value == "custom"
+                    ? (Locale? value) {
+                        localeController
+                            .applyLocale(value ?? const Locale("en"));
+                        localeController
+                            .saveLocale(value ?? const Locale("en"));
+                      }
+                    : null,
+                items: <Locale>[
+                  const Locale("en", "US"),
+                  const Locale("de"),
+                ].map<DropdownMenuItem<Locale>>((Locale locale) {
+                  return DropdownMenuItem<Locale>(
+                      value: locale,
+                      child: Text(localeController.getLocaleDisplayText(
+                          locale, context)));
+                }).toList(),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 0.0, horizontal: 24.0),
+                elevation: 2,
+              ),
             ),
             Card(
                 elevation: 2.0,

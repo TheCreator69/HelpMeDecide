@@ -28,10 +28,18 @@
     "decidePageFurtherDecisionActions": "Decide again!",
 
     "settingsPageTitle": "Settings",
+
     "settingsPageThemeSectionTitle": "Change Theme",
     "settingsPageThemeOptionSystem": "Use System Settings",
     "settingsPageThemeOptionLight": "Light Mode",
     "settingsPageThemeOptionDark": "Dark Mode",
+
+    "settingsPageLanguageSectionTitle": "Change Language",
+    "settingsPageLanguageOptionSystem": "Use System Settings",
+    "settingsPageLanguageOptionCustom": "Choose Language Manually",
+    "settingsPageLanguageEnglish": "English",
+    "settingsPageLanguageGerman": "German",
+
     "settingsPageAboutTitle": "About",
     "settingsPageAboutContent": "Help me Decide v1.0\nCopyright 2023 TheCreator",
     "settingsPageAboutConfirm": "Okay"
