@@ -77,8 +77,8 @@ class _DecisionMakerListViewState extends State<DecisionMakerListView> {
                 trailing: DecisionMakerPopupButton(index: index),
                 onTap: () {
                   Get.to(() => DecidePage(
-                      decisionMaker:
-                          decisionMakersController.getDecisionMakerAt(index)));
+                        decisionMakerIndex: index,
+                      ));
                 },
               ));
         },

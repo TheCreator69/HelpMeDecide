@@ -5,12 +5,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:helpmedecide/view/edit_page.dart';
 
+import '../model/controllers.dart';
 import '../model/decision_maker.dart';
 
 class DecidePage extends StatefulWidget {
-  const DecidePage({super.key, required this.decisionMaker});
+  const DecidePage({super.key, required this.decisionMakerIndex});
 
-  final DecisionMaker decisionMaker;
+  final int decisionMakerIndex;
 
   @override
   State<DecidePage> createState() => _DecidePageState();
@@ -23,15 +24,22 @@ class _DecidePageState extends State<DecidePage> {
 
   List<int> previousDecisions = [];
 
+  final decisionMakersController = Get.find<DecisionMakersController>();
+
+  DecisionMaker getDecisionMaker() {
+    return decisionMakersController
+        .getDecisionMakerAt(widget.decisionMakerIndex);
+  }
+
   void makeDecision() {
     setState(() {
-      decision = widget.decisionMaker.getDecisionAt(getRandomDecisionIndex());
+      decision = getDecisionMaker().getDecisionAt(getRandomDecisionIndex());
       decisionMade = true;
     });
   }
 
   int getRandomDecisionIndex() {
-    int maxDecisions = widget.decisionMaker.getAmountOfDecisions();
+    int maxDecisions = getDecisionMaker().getAmountOfDecisions();
 
     int index = -1;
     while (index == -1 || previousDecisions.contains(index)) {
@@ -59,12 +67,12 @@ class _DecidePageState extends State<DecidePage> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.decisionMaker.title),
+          title: Text(getDecisionMaker().title),
           actions: [
             IconButton(
                 onPressed: () {
-                  Get.to(EditPage(
-                      decisionMaker: widget.decisionMaker,
+                  Get.to(() => EditPage(
+                      decisionMaker: getDecisionMaker(),
                       isCreatingDecisionMaker: false));
                 },
                 icon: const Icon(Icons.edit))
