@@ -1,5 +1,3 @@
-import 'dart:math';
-
 class DecisionMaker {
   DecisionMaker({required this.id, required this.title});
 
@@ -28,12 +26,5 @@ class DecisionMaker {
 
   int getAmountOfDecisions() {
     return _decisions.length;
-  }
-
-  String getRandomDecision() {
-    if (_decisions.isEmpty) {
-      return "";
-    }
-    return _decisions[Random().nextInt(_decisions.length)];
   }
 }
