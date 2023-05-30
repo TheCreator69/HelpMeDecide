@@ -1,6 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
+import 'package:helpmedecide/view/edit_page.dart';
 
 import '../model/decision_maker.dart';
 
@@ -14,14 +17,16 @@ class DecidePage extends StatefulWidget {
 }
 
 class _DecidePageState extends State<DecidePage> {
-  String decision = "Decision will appear here...";
-  String decisionAction = "Decide!";
+  String decision = "";
+  String decisionAction = "";
+  bool decisionMade = false;
 
   List<int> previousDecisions = [];
 
   void makeDecision() {
     setState(() {
       decision = widget.decisionMaker.getDecisionAt(getRandomDecisionIndex());
+      decisionMade = true;
     });
   }
 
@@ -43,9 +48,27 @@ class _DecidePageState extends State<DecidePage> {
 
   @override
   Widget build(BuildContext context) {
+    if (decisionMade) {
+      decisionAction =
+          AppLocalizations.of(context)!.decidePageFurtherDecisionActions;
+    } else {
+      decision = AppLocalizations.of(context)!.decidePageNoDecisionYet;
+      decisionAction =
+          AppLocalizations.of(context)!.decidePageFirstDecisionAction;
+    }
+
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.decisionMaker.title),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Get.to(EditPage(
+                      decisionMaker: widget.decisionMaker,
+                      isCreatingDecisionMaker: false));
+                },
+                icon: const Icon(Icons.edit))
+          ],
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -67,7 +90,6 @@ class _DecidePageState extends State<DecidePage> {
                 child: ElevatedButton(
                     onPressed: () {
                       makeDecision();
-                      decisionAction = "Decide again!";
                     },
                     style: ButtonStyle(
                         elevation: MaterialStateProperty.all(4.0),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 
 import 'decide_page.dart';
@@ -21,7 +22,7 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Decide what to decide"),
+        title: Text(AppLocalizations.of(context)!.homePageTitle),
         actions: [
           IconButton(
               onPressed: () {
@@ -72,7 +73,7 @@ class _DecisionMakerListViewState extends State<DecisionMakerListView> {
                 leading: const Icon(Icons.question_mark_rounded),
                 title: Text(
                     decisionMakersController.getDecisionMakerAt(index).title),
-                horizontalTitleGap: 0.0,
+                horizontalTitleGap: 16.0,
                 trailing: DecisionMakerPopupButton(index: index),
                 onTap: () {
                   Get.to(() => DecidePage(
@@ -115,18 +116,18 @@ class DecisionMakerPopupButton extends StatelessWidget {
       },
       itemBuilder: (BuildContext context) {
         return <PopupMenuEntry<DecisionMakerPopupItem>>[
-          const PopupMenuItem<DecisionMakerPopupItem>(
+          PopupMenuItem<DecisionMakerPopupItem>(
             value: DecisionMakerPopupItem.edit,
             child: ListTile(
-                leading: Icon(Icons.mode_edit),
-                title: Text("Edit decision maker")),
+                leading: const Icon(Icons.mode_edit),
+                title: Text(AppLocalizations.of(context)!.homePagePopupEdit)),
           ),
-          const PopupMenuItem<DecisionMakerPopupItem>(
+          PopupMenuItem<DecisionMakerPopupItem>(
               value: DecisionMakerPopupItem.delete,
               child: ListTile(
-                leading: Icon(Icons.delete, color: Color(0xFFFF3300)),
-                title: Text("Delete decision maker",
-                    style: TextStyle(color: Color(0xFFFF3300))),
+                leading: const Icon(Icons.delete, color: Color(0xFFFF3300)),
+                title: Text(AppLocalizations.of(context)!.homePagePopupDelete,
+                    style: const TextStyle(color: Color(0xFFFF3300))),
               )),
         ];
       },

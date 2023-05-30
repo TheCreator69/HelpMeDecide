@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 
 import '../model/controllers.dart';
@@ -13,14 +14,16 @@ class EditPage extends StatefulWidget {
   final DecisionMaker decisionMaker;
   final bool isCreatingDecisionMaker;
 
-  String getPageTitleText() {
+  String getPageTitleText(BuildContext context) {
     return isCreatingDecisionMaker
-        ? "Create Decision Maker"
-        : "Edit Decision Maker";
+        ? AppLocalizations.of(context)!.editPageTitleCreate
+        : AppLocalizations.of(context)!.editPageTitleEdit;
   }
 
-  String getFinishButtonText() {
-    return isCreatingDecisionMaker ? "Finish Creating" : "Finish Editing";
+  String getFinishButtonText(BuildContext context) {
+    return isCreatingDecisionMaker
+        ? AppLocalizations.of(context)!.editPageFinishCreate
+        : AppLocalizations.of(context)!.editPageFinishEdit;
   }
 
   @override
@@ -68,7 +71,7 @@ class _EditPageState extends State<EditPage> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(widget.getPageTitleText())),
+      appBar: AppBar(title: Text(widget.getPageTitleText(context))),
       body: Center(
           child: Container(
               padding: const EdgeInsets.all(20.0),
@@ -83,14 +86,16 @@ class _EditPageState extends State<EditPage> {
                                 vertical: 8.0, horizontal: 0.0),
                             child: TextFormField(
                               controller: titleController,
-                              decoration: const InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
+                              decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(
                                       vertical: 12.0, horizontal: 12.0),
-                                  border: OutlineInputBorder(),
-                                  labelText: "Decision Maker Title"),
+                                  border: const OutlineInputBorder(),
+                                  labelText: AppLocalizations.of(context)!
+                                      .editPageTitleLabel),
                               validator: (String? value) {
                                 if (value == null || value.isEmpty) {
-                                  return "Please input a decision maker title";
+                                  return AppLocalizations.of(context)!
+                                      .editPageTitleInvalid;
                                 }
                                 return null;
                               },
@@ -102,7 +107,8 @@ class _EditPageState extends State<EditPage> {
                             foregroundColor: MaterialStateProperty.all<Color>(
                                 Theme.of(context).hintColor),
                           ),
-                          child: const Text("Add decision option"),
+                          child: Text(
+                              AppLocalizations.of(context)!.editPageAddOption),
                           onPressed: () {
                             saveControllerValuesToDecisionMaker();
                             decisionControllers.add(TextEditingController());
@@ -113,7 +119,7 @@ class _EditPageState extends State<EditPage> {
                           style: ButtonStyle(
                             elevation: MaterialStateProperty.all(4.0),
                           ),
-                          child: Text(widget.getFinishButtonText()),
+                          child: Text(widget.getFinishButtonText(context)),
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
                               String title = titleController.text;
@@ -170,7 +176,8 @@ class _EditPageState extends State<EditPage> {
                     contentPadding: const EdgeInsets.symmetric(
                         vertical: 0.0, horizontal: 12.0),
                     border: const OutlineInputBorder(),
-                    labelText: "Option #${index + 1}",
+                    labelText: AppLocalizations.of(context)!
+                        .editPageOptionLabel(index + 1),
                     suffixIcon: decisionControllers.length > 2
                         ? IconButton(
                             onPressed: () {
@@ -182,7 +189,7 @@ class _EditPageState extends State<EditPage> {
                         : const SizedBox()),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
-                    return "Please input a decision option";
+                    return AppLocalizations.of(context)!.editPageOptionInvalid;
                   }
                   return null;
                 },

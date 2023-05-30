@@ -1,0 +1,38 @@
+{
+    "appDescription": "Eine App, die Menschen dabei hilft, zu entscheiden, was sie wollen!",
+
+    "homePageTitle": "Entscheiden Sie, was Sie entscheiden möchten",
+    "homePagePopupEdit": "Entscheidungshelfer bearbeiten",
+    "homePagePopupDelete": "Entscheidungshelfer löschen",
+
+    "editPageTitleCreate": "Entscheidungshelfer erstellen",
+    "editPageTitleEdit": "Entscheidungshelfer bearbeiten",
+    "editPageFinishCreate": "Erstellung beenden",
+    "editPageFinishEdit": "Bearbeitung beenden",
+    "editPageTitleLabel": "Titel des Entscheidungshelfers",
+    "editPageTitleInvalid": "Bitte geben Sie einen Titel ein",
+    "editPageOptionLabel": "Möglichkeit #{index}",
+    "@editPageOptionLabel": {
+        "placeholders": {
+            "index": {
+                "type": "int",
+                "example": "0"
+            }
+        }
+    },
+    "editPageOptionInvalid": "Bitte geben sie eine Möglichkeit ein",
+    "editPageAddOption": "Neue Möglichkeit hinzufügen",
+
+    "decidePageNoDecisionYet": "Entscheidung wird hier erscheinen...",
+    "decidePageFirstDecisionAction": "Entscheiden Sie sich!",
+    "decidePageFurtherDecisionActions": "Entscheiden Sie sich nochmal!",
+
+    "settingsPageTitle": "Einstellungen",
+    "settingsPageThemeSectionTitle": "Theme ändern",
+    "settingsPageThemeOptionSystem": "Systemeinstellungen verwenden",
+    "settingsPageThemeOptionLight": "Light Mode",
+    "settingsPageThemeOptionDark": "Dark Mode",
+    "settingsPageAboutTitle": "Über diese App",
+    "settingsPageAboutContent": "Help me Decide v1.0\nCopyright 2023 TheCreator",
+    "settingsPageAboutConfirm": "Okay"
+}

@@ -1,0 +1,38 @@
+{
+    "appDescription": "An app helping people decide on whatever they want!",
+
+    "homePageTitle": "Decide what to decide",
+    "homePagePopupEdit": "Edit decision maker",
+    "homePagePopupDelete": "Delete decision maker",
+
+    "editPageTitleCreate": "Create Decision Maker",
+    "editPageTitleEdit": "Edit Decision Maker",
+    "editPageFinishCreate": "Finish Creating",
+    "editPageFinishEdit": "Finish Editing",
+    "editPageTitleLabel": "Decision Maker Title",
+    "editPageTitleInvalid": "Please input a decision maker title",
+    "editPageOptionLabel": "Option #{index}",
+    "@editPageOptionLabel": {
+        "placeholders": {
+            "index": {
+                "type": "int",
+                "example": "0"
+            }
+        }
+    },
+    "editPageOptionInvalid": "Please input a decision option",
+    "editPageAddOption": "Add decision option",
+
+    "decidePageNoDecisionYet": "Decision will appear here...",
+    "decidePageFirstDecisionAction": "Decide!",
+    "decidePageFurtherDecisionActions": "Decide again!",
+
+    "settingsPageTitle": "Settings",
+    "settingsPageThemeSectionTitle": "Change Theme",
+    "settingsPageThemeOptionSystem": "Use System Settings",
+    "settingsPageThemeOptionLight": "Light Mode",
+    "settingsPageThemeOptionDark": "Dark Mode",
+    "settingsPageAboutTitle": "About",
+    "settingsPageAboutContent": "Help me Decide v1.0\nCopyright 2023 TheCreator",
+    "settingsPageAboutConfirm": "Okay"
+}

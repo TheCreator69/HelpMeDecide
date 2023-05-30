@@ -6,8 +6,10 @@ This project is in active development at the moment, so except more features to 
 
 ## Local Project Setup
 
-If you wish to mess around with the code yourself, all you need to do is [install Flutter](https://docs.flutter.dev/get-started/install),
-fork this project and clone it to your computer. Then run `flutter pub get` to download all dependencies.
+If you wish to mess around with the code yourself, you need to [install Flutter](https://docs.flutter.dev/get-started/install) first,
+then fork this project and clone it to your computer. Next, run `flutter pub get` to download all dependencies.
+The Dart file providing the localizations isn't included in the project by default. Run `flutter gen-l10n` to generate it.
+
 For Android testing, [set up an Android emulator](https://docs.flutter.dev/get-started/install/windows#android-setup).
 If you wish to test the project for iOS, you need to be running Xcode on a macOS system.
 
