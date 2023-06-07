@@ -54,6 +54,7 @@ class SettingsPage extends StatelessWidget {
                     themeController.saveThemeMode(value ?? ThemeMode.system);
                   }),
             ),
+            /*
             Text(AppLocalizations.of(context)!.settingsPageLanguageSectionTitle,
                 style: const TextStyle(fontSize: 14)),
             Obx(
@@ -105,6 +106,7 @@ class SettingsPage extends StatelessWidget {
                 elevation: 2,
               ),
             ),
+            */
             Card(
                 elevation: 2.0,
                 child: ListTile(
