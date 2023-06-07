@@ -208,7 +208,7 @@ class LocaleController extends GetxController {
   }
 
   void applyLocale(Locale locale) {
-    Intl.defaultLocale = locale.toLanguageTag();
+    Intl.defaultLocale = locale.toString();
     currentLocale.value = locale;
   }
 
@@ -225,7 +225,7 @@ class LocaleController extends GetxController {
 
   String getLocaleDisplayText(Locale locale, BuildContext context) {
     final Map<Locale, String> localeToDisplayText = {
-      const Locale("en", "Us"):
+      const Locale("en", "US"):
           AppLocalizations.of(context)!.settingsPageLanguageEnglish,
       const Locale("en"):
           AppLocalizations.of(context)!.settingsPageLanguageEnglish,
