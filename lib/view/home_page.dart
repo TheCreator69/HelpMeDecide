@@ -31,7 +31,14 @@ class HomePage extends StatelessWidget {
               icon: const Icon(Icons.settings))
         ],
       ),
-      body: const DecisionMakerListView(),
+      body: Obx(() => Visibility(
+          visible: decisionMakersController.decisionMakers.isNotEmpty,
+          replacement: Center(
+              child: Text(
+            AppLocalizations.of(context)!.homePageEmpty,
+            textAlign: TextAlign.center,
+          )),
+          child: const DecisionMakerListView())),
       floatingActionButton: FloatingActionButton(
         onPressed: (() {
           Get.to(() => EditPage(

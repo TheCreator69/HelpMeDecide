@@ -2,6 +2,7 @@
     "appTitle": "Help Me Decide",
 
     "homePageTitle": "Decide what to decide",
+    "homePageEmpty": "It's so lonely here...\nStart the fun by adding a decision maker!",
     "homePagePopupEdit": "Edit decision maker",
     "homePagePopupDelete": "Delete decision maker",
 
