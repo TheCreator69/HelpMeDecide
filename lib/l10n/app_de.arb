@@ -34,6 +34,6 @@
     "settingsPageLanguageGerman": "Deutsch",
 
     "settingsPageAboutTitle": "Über diese App",
-    "settingsPageAboutContent": "Help me Decide v1.0\nCopyright 2023 TheCreator",
+    "settingsPageAboutContent": "Help me Decide v{version}\nCopyright 2023 TheCreator",
     "settingsPageAboutConfirm": "Okay"
 }

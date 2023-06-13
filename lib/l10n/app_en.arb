@@ -42,6 +42,14 @@
     "settingsPageLanguageGerman": "German",
 
     "settingsPageAboutTitle": "About",
-    "settingsPageAboutContent": "Help me Decide v1.0\nCopyright 2023 TheCreator",
+    "settingsPageAboutContent": "Help me Decide v{version}\nCopyright 2023 TheCreator",
+    "@settingsPageAboutContent": {
+        "placeholders": {
+            "version": {
+                "type": "String",
+                "example": "1.0.0"
+            }
+        }
+    },
     "settingsPageAboutConfirm": "Okay"
 }
