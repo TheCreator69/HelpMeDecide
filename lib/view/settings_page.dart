@@ -14,7 +14,7 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.settingsPageAboutTitle),
+          title: Text(AppLocalizations.of(context)!.settingsPageTitle),
         ),
         body: ListView(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24.0),
@@ -54,7 +54,6 @@ class SettingsPage extends StatelessWidget {
                     themeController.saveThemeMode(value ?? ThemeMode.system);
                   }),
             ),
-            /*
             Text(AppLocalizations.of(context)!.settingsPageLanguageSectionTitle,
                 style: const TextStyle(fontSize: 14)),
             Obx(
@@ -106,7 +105,6 @@ class SettingsPage extends StatelessWidget {
                 elevation: 2,
               ),
             ),
-            */
             Card(
                 elevation: 2.0,
                 child: ListTile(
@@ -118,7 +116,7 @@ class SettingsPage extends StatelessWidget {
                       title:
                           AppLocalizations.of(context)!.settingsPageAboutTitle,
                       middleText: AppLocalizations.of(context)!
-                          .settingsPageAboutContent,
+                          .settingsPageAboutContent("v1.0.1"),
                       textConfirm: AppLocalizations.of(context)!
                           .settingsPageAboutConfirm,
                       confirm: OutlinedButton.icon(
