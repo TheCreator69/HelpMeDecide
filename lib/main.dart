@@ -38,8 +38,7 @@ class DecisionApp extends StatelessWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: localeController.currentLocale.value,
-      onGenerateTitle: (context) =>
-          AppLocalizations.of(context)!.appDescription,
+      onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
       home: const HomePage(),
     );
   }
