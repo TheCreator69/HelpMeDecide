@@ -128,7 +128,7 @@ class SettingsPage extends StatelessWidget {
                     contentPadding: const EdgeInsets.all(20.0),
                     title: AppLocalizations.of(context)!.settingsPageAboutTitle,
                     middleText: AppLocalizations.of(context)!
-                        .settingsPageAboutContent("1.0.1"),
+                        .settingsPageAboutContent("1.0.2"),
                     textConfirm:
                         AppLocalizations.of(context)!.settingsPageAboutConfirm,
                     confirm: OutlinedButton.icon(

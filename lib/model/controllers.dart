@@ -190,7 +190,7 @@ class LocaleController extends GetxController {
   Rx<bool> usingSystemLocale = true.obs;
 
   void loadLocaleSettings() {
-    final bool isUsingSystemLocale = _box.read(_localeModeKey);
+    final bool isUsingSystemLocale = _box.read(_localeModeKey) ?? true;
     usingSystemLocale.value = isUsingSystemLocale;
 
     List<String> loadedLocaleInfo =
