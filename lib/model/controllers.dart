@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:intl/intl.dart';
 
 import 'decision_maker.dart';
 
@@ -187,28 +186,26 @@ class LocaleController extends GetxController {
   final String _localeKey = "locale";
   final String _localeModeKey = "localeMode";
 
-  Rx<Locale> currentLocale = (Get.deviceLocale ?? const Locale("en", "US")).obs;
-  Rx<String> localeMode = "system".obs;
+  Rx<Locale> currentLocale = (Get.deviceLocale ?? Get.fallbackLocale!).obs;
+  Rx<bool> usingSystemLocale = true.obs;
 
-  Locale loadLocale() {
+  void loadLocaleSettings() {
     final bool isUsingSystemLocale = _box.read(_localeModeKey);
-    if (isUsingSystemLocale) {
-      localeMode.value = isUsingSystemLocale ? "system" : "custom";
-      return currentLocale.value;
-    }
+    usingSystemLocale.value = isUsingSystemLocale;
 
-    final String loadedLocaleInfo = _box.read(_localeKey) ?? "en";
-    currentLocale.value = Locale(loadedLocaleInfo);
-    return currentLocale.value;
+    List<String> loadedLocaleInfo =
+        (_box.read(_localeKey) ?? "en-US").toString().split("-");
+    currentLocale.value = Locale(loadedLocaleInfo[0],
+        loadedLocaleInfo.length > 1 ? loadedLocaleInfo[1] : null);
   }
 
   void saveLocale(Locale locale) {
-    String localeValue = locale.languageCode;
+    String localeValue = locale.toLanguageTag();
     _box.write(_localeKey, localeValue);
   }
 
   void applyLocale(Locale locale) {
-    Intl.defaultLocale = locale.toString();
+    Get.updateLocale(locale);
     currentLocale.value = locale;
   }
 
@@ -217,17 +214,19 @@ class LocaleController extends GetxController {
   }
 
   void applyIsUsingSystemLocale(bool isUsingSystemLocale) {
-    isUsingSystemLocale
-        ? Get.locale = Get.deviceLocale
-        : Get.locale = currentLocale.value;
-    localeMode.value = isUsingSystemLocale ? "system" : "custom";
+    usingSystemLocale.value = isUsingSystemLocale;
+    if (isUsingSystemLocale) {
+      saveLocale(Get.deviceLocale!);
+      applyLocale(Get.deviceLocale!);
+    } else {
+      saveLocale(currentLocale.value);
+      applyLocale(currentLocale.value);
+    }
   }
 
   String getLocaleDisplayText(Locale locale, BuildContext context) {
     final Map<Locale, String> localeToDisplayText = {
       const Locale("en", "US"):
-          AppLocalizations.of(context)!.settingsPageLanguageEnglish,
-      const Locale("en"):
           AppLocalizations.of(context)!.settingsPageLanguageEnglish,
       const Locale("de"):
           AppLocalizations.of(context)!.settingsPageLanguageGerman,

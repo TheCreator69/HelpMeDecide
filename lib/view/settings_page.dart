@@ -54,17 +54,18 @@ class SettingsPage extends StatelessWidget {
                     themeController.saveThemeMode(value ?? ThemeMode.system);
                   }),
             ),
+            const Divider(),
             Text(AppLocalizations.of(context)!.settingsPageLanguageSectionTitle,
                 style: const TextStyle(fontSize: 14)),
             Obx(
               () => RadioListTile(
                 title: Text(AppLocalizations.of(context)!
                     .settingsPageLanguageOptionSystem),
-                value: "system",
-                groupValue: localeController.localeMode.value,
+                value: true,
+                groupValue: localeController.usingSystemLocale.value,
                 onChanged: (value) {
-                  localeController.applyIsUsingSystemLocale(true);
-                  localeController.saveIsUsingSystemLocale(true);
+                  localeController.applyIsUsingSystemLocale(value!);
+                  localeController.saveIsUsingSystemLocale(value);
                 },
               ),
             ),
@@ -72,39 +73,44 @@ class SettingsPage extends StatelessWidget {
               () => RadioListTile(
                 title: Text(AppLocalizations.of(context)!
                     .settingsPageLanguageOptionCustom),
-                value: "custom",
-                groupValue: localeController.localeMode.value,
+                value: false,
+                groupValue: localeController.usingSystemLocale.value,
                 onChanged: (value) {
-                  localeController.applyIsUsingSystemLocale(false);
-                  localeController.saveIsUsingSystemLocale(false);
+                  localeController.applyIsUsingSystemLocale(value!);
+                  localeController.saveIsUsingSystemLocale(value);
                 },
               ),
             ),
-            Obx(
-              () => DropdownButton<Locale>(
-                value: localeController.currentLocale.value,
-                onChanged: localeController.localeMode.value == "custom"
-                    ? (Locale? value) {
-                        localeController
-                            .applyLocale(value ?? const Locale("en"));
-                        localeController
-                            .saveLocale(value ?? const Locale("en"));
-                      }
-                    : null,
-                items: <Locale>[
-                  const Locale("en", "US"),
-                  const Locale("de"),
-                ].map<DropdownMenuItem<Locale>>((Locale locale) {
-                  return DropdownMenuItem<Locale>(
-                      value: locale,
-                      child: Text(localeController.getLocaleDisplayText(
-                          locale, context)));
-                }).toList(),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 0.0, horizontal: 24.0),
-                elevation: 2,
-              ),
+            Container(
+              decoration: BoxDecoration(
+                  border: Border.all(
+                      width: 2, color: Theme.of(context).colorScheme.outline),
+                  borderRadius: BorderRadius.circular(4)),
+              child: Obx(() => DropdownButtonHideUnderline(
+                    child: DropdownButton<Locale>(
+                      value: localeController.currentLocale.value,
+                      onChanged: localeController.usingSystemLocale.value
+                          ? null
+                          : (Locale? value) {
+                              localeController.applyLocale(value!);
+                              localeController.saveLocale(value);
+                            },
+                      items: <Locale>[
+                        const Locale("en", "US"),
+                        const Locale("de"),
+                      ].map<DropdownMenuItem<Locale>>((Locale locale) {
+                        return DropdownMenuItem<Locale>(
+                            value: locale,
+                            child: Text(localeController.getLocaleDisplayText(
+                                locale, context)));
+                      }).toList(),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 0.0, horizontal: 24.0),
+                      elevation: 2,
+                    ),
+                  )),
             ),
+            const Divider(),
             Card(
                 elevation: 2.0,
                 child: ListTile(
@@ -116,7 +122,7 @@ class SettingsPage extends StatelessWidget {
                       title:
                           AppLocalizations.of(context)!.settingsPageAboutTitle,
                       middleText: AppLocalizations.of(context)!
-                          .settingsPageAboutContent("v1.0.1"),
+                          .settingsPageAboutContent("1.0.1"),
                       textConfirm: AppLocalizations.of(context)!
                           .settingsPageAboutConfirm,
                       confirm: OutlinedButton.icon(

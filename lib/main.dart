@@ -20,6 +20,8 @@ class DecisionApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    localeController.loadLocaleSettings();
+
     return GetMaterialApp(
       title: "Help me Decide",
       debugShowCheckedModeBanner: false,
@@ -38,6 +40,7 @@ class DecisionApp extends StatelessWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: localeController.currentLocale.value,
+      fallbackLocale: const Locale("en", "US"),
       onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
       home: const HomePage(),
     );
