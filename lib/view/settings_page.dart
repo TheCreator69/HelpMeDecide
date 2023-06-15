@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../model/controllers.dart';
 
@@ -9,6 +10,12 @@ class SettingsPage extends StatelessWidget {
 
   final themeController = Get.find<ThemeController>();
   final localeController = Get.find<LocaleController>();
+
+  Future<void> launchURL(Uri url) async {
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -117,19 +124,39 @@ class SettingsPage extends StatelessWidget {
                   title: Text(
                       AppLocalizations.of(context)!.settingsPageAboutTitle),
                   onTap: () => Get.defaultDialog(
-                      radius: 10.0,
-                      contentPadding: const EdgeInsets.all(20.0),
-                      title:
-                          AppLocalizations.of(context)!.settingsPageAboutTitle,
-                      middleText: AppLocalizations.of(context)!
-                          .settingsPageAboutContent("1.0.1"),
-                      textConfirm: AppLocalizations.of(context)!
-                          .settingsPageAboutConfirm,
-                      confirm: OutlinedButton.icon(
-                          onPressed: () => Get.back(),
-                          icon: const Icon(Icons.check),
-                          label: Text(AppLocalizations.of(context)!
-                              .settingsPageAboutConfirm))),
+                    radius: 10.0,
+                    contentPadding: const EdgeInsets.all(20.0),
+                    title: AppLocalizations.of(context)!.settingsPageAboutTitle,
+                    middleText: AppLocalizations.of(context)!
+                        .settingsPageAboutContent("1.0.1"),
+                    textConfirm:
+                        AppLocalizations.of(context)!.settingsPageAboutConfirm,
+                    confirm: OutlinedButton.icon(
+                        onPressed: () => Get.back(),
+                        icon: const Icon(Icons.check),
+                        label: Text(AppLocalizations.of(context)!
+                            .settingsPageAboutConfirm)),
+                    actions: [
+                      IconButton(
+                          onPressed: () => launchURL(Uri.parse(
+                              "https://github.com/TheCreator69/HelpMeDecide")),
+                          icon: Image.asset(
+                            "assets/github.png",
+                            width: 48,
+                            height: 48,
+                            color: Theme.of(context).colorScheme.outline,
+                          )),
+                      IconButton(
+                          onPressed: () => launchURL(
+                              Uri.parse("https://discord.gg/PM5BB4JsDE")),
+                          icon: Image.asset(
+                            "assets/discord.png",
+                            width: 48,
+                            height: 48,
+                            color: Theme.of(context).colorScheme.outline,
+                          ))
+                    ],
+                  ),
                 )),
           ],
         ));
