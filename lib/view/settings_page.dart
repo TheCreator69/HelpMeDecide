@@ -136,6 +136,7 @@ class SettingsPage extends StatelessWidget {
                         icon: const Icon(Icons.check),
                         label: Text(AppLocalizations.of(context)!
                             .settingsPageAboutConfirm)),
+                    /*
                     actions: [
                       IconButton(
                           onPressed: () => launchURL(Uri.parse(
@@ -156,6 +157,7 @@ class SettingsPage extends StatelessWidget {
                             color: Theme.of(context).colorScheme.outline,
                           ))
                     ],
+                    */
                   ),
                 )),
           ],
