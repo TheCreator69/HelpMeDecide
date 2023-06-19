@@ -9,7 +9,11 @@ import 'view/home_page.dart';
 
 void main() async {
   await GetStorage.init();
+
   runApp(DecisionApp());
+
+  final settingsController = Get.put(SettingsController());
+  await settingsController.retrieveAppVersion();
 }
 
 class DecisionApp extends StatelessWidget {

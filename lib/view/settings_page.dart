@@ -10,6 +10,7 @@ class SettingsPage extends StatelessWidget {
 
   final themeController = Get.find<ThemeController>();
   final localeController = Get.find<LocaleController>();
+  final settingsController = Get.find<SettingsController>();
 
   Future<void> launchURL(Uri url) async {
     if (!await launchUrl(url)) {
@@ -128,7 +129,8 @@ class SettingsPage extends StatelessWidget {
                     contentPadding: const EdgeInsets.all(20.0),
                     title: AppLocalizations.of(context)!.settingsPageAboutTitle,
                     middleText: AppLocalizations.of(context)!
-                        .settingsPageAboutContent("1.0.2"),
+                        .settingsPageAboutContent(
+                            settingsController.appVersion),
                     textConfirm:
                         AppLocalizations.of(context)!.settingsPageAboutConfirm,
                     confirm: OutlinedButton.icon(

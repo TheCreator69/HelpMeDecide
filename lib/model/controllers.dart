@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import 'decision_maker.dart';
 
@@ -73,6 +74,7 @@ class DecisionMakersController extends GetxController {
   }
 }
 
+// Move loading and storing of any and all data from the other controllers to this controller
 class StorageController extends GetxController {
   final _box = GetStorage();
 
@@ -131,6 +133,7 @@ class StorageController extends GetxController {
   }
 }
 
+// Combine ThemeController and LocaleController to SettingsController
 class ThemeController extends GetxController {
   final GetStorage _box = GetStorage();
 
@@ -233,5 +236,14 @@ class LocaleController extends GetxController {
     };
     return localeToDisplayText[locale] ??
         AppLocalizations.of(context)!.settingsPageLanguageEnglish;
+  }
+}
+
+class SettingsController extends GetxController {
+  late final String appVersion;
+
+  Future<void> retrieveAppVersion() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    appVersion = packageInfo.version;
   }
 }
