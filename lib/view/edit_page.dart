@@ -48,7 +48,9 @@ class _EditPageState extends State<EditPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.getPageTitleText(context))),
+      appBar: AppBar(
+        title: Text(widget.getPageTitleText(context)),
+      ),
       body: Center(
           child: Container(
               padding: const EdgeInsets.all(20.0),
@@ -78,57 +80,66 @@ class _EditPageState extends State<EditPage> {
                               },
                             )),
                         createDecisionList(),
-                        ElevatedButton(
-                          style: ButtonStyle(
-                            elevation: MaterialStateProperty.all(4.0),
-                            foregroundColor: MaterialStateProperty.all<Color>(
-                                Theme.of(context).hintColor),
+                        Card(
+                          elevation: 4.0,
+                          child: ListTile(
+                            title: Text(
+                              AppLocalizations.of(context)!.editPageAddOption,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            textColor: Theme.of(context).hintColor,
+                            onTap: () {
+                              widget.editSession.addDecisionController();
+                              setState(() {});
+                            },
                           ),
-                          child: Text(
-                              AppLocalizations.of(context)!.editPageAddOption),
-                          onPressed: () {
-                            widget.editSession.addDecisionController();
-                            setState(() {});
-                          },
                         ),
-                        ElevatedButton(
-                          style: ButtonStyle(
-                            elevation: MaterialStateProperty.all(4.0),
-                          ),
-                          child: Text(widget.getFinishButtonText(context)),
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              String title =
-                                  widget.editSession.titleController.text;
-                              List<String> decisions =
-                                  widget.editSession.decisionControllers
-                                      .map(
-                                        (e) => e.text,
-                                      )
-                                      .toList();
-                              if (widget.isCreatingDecisionMaker) {
-                                DecisionMaker maker = decisionMakersController
-                                    .createDecisionMaker(title, decisions);
-                                decisionMakersController
-                                    .addDecisionMaker(maker);
-                                storageController.saveDecisionMaker(maker);
-                              } else {
-                                decisionMakersController.changeDecisionMaker(
-                                    widget.decisionMaker.id, title, decisions);
-                                DecisionMaker savedDecisionMaker =
-                                    DecisionMaker(
-                                        id: widget.decisionMaker.id,
-                                        title: title);
-                                savedDecisionMaker.setDecisions(decisions);
-                                storageController
-                                    .saveDecisionMaker(savedDecisionMaker);
-                              }
-                              widget.editSession.disposeOfControllers();
+                        Card(
+                          elevation: 4.0,
+                          child: ListTile(
+                            title: Text(
+                              widget.getFinishButtonText(context),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            textColor: Theme.of(context).hintColor,
+                            onTap: () {
+                              if (_formKey.currentState!.validate()) {
+                                String title =
+                                    widget.editSession.titleController.text;
+                                List<String> decisions =
+                                    widget.editSession.decisionControllers
+                                        .map(
+                                          (e) => e.text,
+                                        )
+                                        .toList();
+                                if (widget.isCreatingDecisionMaker) {
+                                  DecisionMaker maker = decisionMakersController
+                                      .createDecisionMaker(title, decisions);
+                                  decisionMakersController
+                                      .addDecisionMaker(maker);
+                                  storageController.saveDecisionMaker(maker);
+                                } else {
+                                  decisionMakersController.changeDecisionMaker(
+                                      widget.decisionMaker.id,
+                                      title,
+                                      decisions);
+                                  DecisionMaker savedDecisionMaker =
+                                      DecisionMaker(
+                                          id: widget.decisionMaker.id,
+                                          title: title);
+                                  savedDecisionMaker.setDecisions(decisions);
+                                  storageController
+                                      .saveDecisionMaker(savedDecisionMaker);
+                                }
+                                widget.editSession.disposeOfControllers();
 
-                              Navigator.of(context).pop();
-                            }
-                          },
-                        )
+                                Navigator.of(context).pop();
+                              }
+                            },
+                          ),
+                        ),
                       ],
                     ))
               ])))),
