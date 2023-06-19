@@ -136,7 +136,6 @@ class SettingsPage extends StatelessWidget {
                         icon: const Icon(Icons.check),
                         label: Text(AppLocalizations.of(context)!
                             .settingsPageAboutConfirm)),
-                    /*
                     actions: [
                       IconButton(
                           onPressed: () => launchURL(Uri.parse(
@@ -148,8 +147,8 @@ class SettingsPage extends StatelessWidget {
                             color: Theme.of(context).colorScheme.outline,
                           )),
                       IconButton(
-                          onPressed: () => launchURL(
-                              Uri.parse("https://discord.gg/PM5BB4JsDE")),
+                          onPressed: () => launchURL(Uri.parse(
+                              "https://discord.com/invite/PM5BB4JsDE")),
                           icon: Image.asset(
                             "assets/discord.png",
                             width: 48,
@@ -157,7 +156,6 @@ class SettingsPage extends StatelessWidget {
                             color: Theme.of(context).colorScheme.outline,
                           ))
                     ],
-                    */
                   ),
                 )),
           ],
