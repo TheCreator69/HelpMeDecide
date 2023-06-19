@@ -120,6 +120,36 @@ class SettingsPage extends StatelessWidget {
             ),
             const Divider(),
             Card(
+              elevation: 2,
+              child: ListTile(
+                leading: Image.asset(
+                  "assets/discord.png",
+                  width: 48,
+                  height: 48,
+                  color: Theme.of(context).colorScheme.outline,
+                ),
+                title:
+                    Text(AppLocalizations.of(context)!.settingsPageDiscordLink),
+                onTap: () => launchURL(
+                    Uri.parse("https://discord.com/invite/PM5BB4JsDE")),
+              ),
+            ),
+            Card(
+              elevation: 2,
+              child: ListTile(
+                leading: Image.asset(
+                  "assets/github.png",
+                  width: 48,
+                  height: 48,
+                  color: Theme.of(context).colorScheme.outline,
+                ),
+                title:
+                    Text(AppLocalizations.of(context)!.settingsPageGitHubLink),
+                onTap: () => launchURL(
+                    Uri.parse("https://github.com/TheCreator69/HelpMeDecide")),
+              ),
+            ),
+            Card(
                 elevation: 2.0,
                 child: ListTile(
                   title: Text(
@@ -138,26 +168,6 @@ class SettingsPage extends StatelessWidget {
                         icon: const Icon(Icons.check),
                         label: Text(AppLocalizations.of(context)!
                             .settingsPageAboutConfirm)),
-                    actions: [
-                      IconButton(
-                          onPressed: () => launchURL(Uri.parse(
-                              "https://github.com/TheCreator69/HelpMeDecide")),
-                          icon: Image.asset(
-                            "assets/github.png",
-                            width: 48,
-                            height: 48,
-                            color: Theme.of(context).colorScheme.outline,
-                          )),
-                      IconButton(
-                          onPressed: () => launchURL(Uri.parse(
-                              "https://discord.com/invite/PM5BB4JsDE")),
-                          icon: Image.asset(
-                            "assets/discord.png",
-                            width: 48,
-                            height: 48,
-                            color: Theme.of(context).colorScheme.outline,
-                          ))
-                    ],
                   ),
                 )),
           ],

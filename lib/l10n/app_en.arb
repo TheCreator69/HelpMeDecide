@@ -41,7 +41,10 @@
     "settingsPageLanguageEnglish": "English",
     "settingsPageLanguageGerman": "German",
 
-    "settingsPageAboutTitle": "About",
+    "settingsPageDiscordLink": "Join our Discord!",
+    "settingsPageGitHubLink": "Check out the code at GitHub!",
+
+    "settingsPageAboutTitle": "About this App",
     "settingsPageAboutContent": "Help me Decide v{version}\nCopyright 2023 TheCreator",
     "@settingsPageAboutContent": {
         "placeholders": {

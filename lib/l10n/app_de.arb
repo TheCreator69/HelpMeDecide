@@ -33,6 +33,9 @@
     "settingsPageLanguageEnglish": "Englisch",
     "settingsPageLanguageGerman": "Deutsch",
 
+    "settingsPageDiscordLink": "Tritt unserem Discord bei!",
+    "settingsPageGitHubLink": "Schau dir den Code auf GitHub an!",
+
     "settingsPageAboutTitle": "Über diese App",
     "settingsPageAboutContent": "Help me Decide v{version}\nCopyright 2023 TheCreator",
     "settingsPageAboutConfirm": "Okay"
