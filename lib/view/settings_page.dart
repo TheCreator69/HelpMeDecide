@@ -151,6 +151,12 @@ class SettingsPage extends StatelessWidget {
             Card(
                 elevation: 2.0,
                 child: ListTile(
+                  leading: Image.asset(
+                    "assets/icon.png",
+                    width: 48,
+                    height: 48,
+                    color: Theme.of(context).colorScheme.outline,
+                  ),
                   title: Text(
                       AppLocalizations.of(context)!.settingsPageAboutTitle),
                   onTap: () => Get.defaultDialog(

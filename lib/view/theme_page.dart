@@ -21,7 +21,6 @@ class ThemePage extends StatelessWidget {
           ],
         ),
         body: ListView.builder(
-          shrinkWrap: true,
           padding: const EdgeInsets.all(8.0),
           itemCount: Get.find<DecisionThemeController>().availableThemes.length,
           physics: const ClampingScrollPhysics(),
@@ -33,35 +32,63 @@ class ThemePage extends StatelessWidget {
 }
 
 class ThemeCard extends StatelessWidget {
-  const ThemeCard({super.key, required this.index});
+  ThemeCard({super.key, required this.index});
 
   final int index;
+  final decisionThemeController = Get.find<DecisionThemeController>();
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 4.0,
+      clipBehavior: Clip.hardEdge,
       child: Column(children: [
-        const Placeholder(
-          fallbackHeight: 200.0,
-        ),
+        Visibility(
+            visible:
+                decisionThemeController.availableThemes[index].preview != null,
+            child: ColorFiltered(
+              colorFilter: const ColorFilter.matrix(<double>[
+                1, 0, 0, 0, 10, // Red channel adjustment
+                0, 1, 0, 0, 10, // Green channel adjustment
+                0, 0, 1, 0, 10, // Blue channel adjustment
+                0, 0, 0, 1, 0, // Alpha channel adjustment
+              ]),
+              child: decisionThemeController.availableThemes[index].preview,
+            )),
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Theme title",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    Text("Theme description\nWith multiple lines.")
-                  ]),
-              Switch(
-                value: true,
-                onChanged: (value) {},
+              Expanded(
+                flex: 4,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        decisionThemeController.availableThemes[index].name,
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        decisionThemeController
+                            .availableThemes[index].description,
+                        softWrap: true,
+                      ),
+                    ]),
+              ),
+              Expanded(
+                child: Obx(
+                  () => Switch(
+                    value:
+                        decisionThemeController.currentDecisionThemeID.value ==
+                            index,
+                    onChanged: (value) {
+                      decisionThemeController.currentDecisionThemeID.value =
+                          index;
+                    },
+                  ),
+                ),
               ),
             ],
           ),

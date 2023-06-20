@@ -56,5 +56,10 @@
             }
         }
     },
-    "settingsPageAboutConfirm": "Okay"
+    "settingsPageAboutConfirm": "Okay",
+
+    "themeClassicName": "Minimalist",
+    "themeClassicDescription": "The classic theme. Simple text without any flair.",
+    "themeWheelName": "Wheel of Fortune",
+    "themeWheelDescription": "A multi-colored wheel that you can spin. The segment it lands on determines the final decision."
 }

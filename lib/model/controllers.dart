@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:helpmedecide/model/types.dart';
+import 'package:helpmedecide/view/decide_page.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class DecisionAppBindings extends Bindings {
@@ -193,14 +194,36 @@ class DecisionThemeController extends GetxController {
 
   Rx<int> currentDecisionThemeID = 0.obs;
 
-  final List<DecisionThemeData> availableThemes = [
-    DecisionThemeData(
-      id: 0,
-      name: "Minimalist",
-      description:
-          "The classic theme. Simple text without any delays. Straightforward and simple.",
-    )
-  ];
+  final List<DecisionThemeData> availableThemes = [];
+
+  void populateAvailableThemes(BuildContext context) {
+    availableThemes.clear();
+
+    availableThemes.add(
+      DecisionThemeData(
+          id: 0,
+          name: AppLocalizations.of(context)!.themeClassicName,
+          description: AppLocalizations.of(context)!.themeClassicDescription,
+          preview: Image.asset("assets/classic_thumb.png")),
+    );
+    availableThemes.add(DecisionThemeData(
+        id: 1,
+        name: AppLocalizations.of(context)!.themeWheelName,
+        description: AppLocalizations.of(context)!.themeWheelDescription));
+  }
+
+  DecisionThemeData getCurrentTheme() {
+    return availableThemes[currentDecisionThemeID.value];
+  }
+
+  Widget getDecisionScreen(int index) {
+    switch (currentDecisionThemeID.value) {
+      case 0:
+        return DecidePage(decisionMakerIndex: index);
+      default:
+        return DecidePage(decisionMakerIndex: index);
+    }
+  }
 
   void loadDecisionThemeInfo() {
     currentDecisionThemeID.value =

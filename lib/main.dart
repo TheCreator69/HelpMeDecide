@@ -40,7 +40,6 @@ void main() async {
 class DecisionApp extends StatelessWidget {
   DecisionApp({super.key});
 
-  final storageController = Get.find<StorageController>();
   final themeController = Get.find<ThemeController>();
   final localeController = Get.find<LocaleController>();
 

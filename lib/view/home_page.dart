@@ -3,7 +3,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:helpmedecide/model/controllers.dart';
 import 'package:helpmedecide/model/types.dart';
-import 'package:helpmedecide/view/decide_page.dart';
 import 'package:helpmedecide/view/edit_page.dart';
 import 'package:helpmedecide/view/settings_page.dart';
 
@@ -12,9 +11,12 @@ class HomePage extends StatelessWidget {
 
   final storageController = Get.find<StorageController>();
   final decisionMakersController = Get.find<DecisionMakersController>();
+  final decisionThemeController = Get.find<DecisionThemeController>();
 
   @override
   Widget build(BuildContext context) {
+    decisionThemeController.populateAvailableThemes(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.homePageTitle),
@@ -79,9 +81,8 @@ class _DecisionMakerListViewState extends State<DecisionMakerListView> {
                 horizontalTitleGap: 16.0,
                 trailing: DecisionMakerPopupButton(index: index),
                 onTap: () {
-                  Get.to(() {
-                    DecidePage(decisionMakerIndex: index);
-                  });
+                  Get.to(
+                      () => decisionThemeController.getDecisionScreen(index));
                 },
               ));
         },

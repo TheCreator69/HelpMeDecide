@@ -40,5 +40,10 @@
 
     "settingsPageAboutTitle": "Über diese App",
     "settingsPageAboutContent": "Help me Decide v{version}\nCopyright 2023 TheCreator",
-    "settingsPageAboutConfirm": "Okay"
+    "settingsPageAboutConfirm": "Okay",
+
+    "themeClassicName": "Minimalistisch",
+    "themeClassicDescription": "Das klassische Theme. Einfacher Text ohne Flair.",
+    "themeWheelName": "Glücksrad",
+    "themeWheelDescription": "Ein mehrfarbiges Rad, das Sie drehen können. Das Segment, auf dem es landet, bestimmt die endgültige Entscheidung."
 }
