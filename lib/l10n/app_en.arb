@@ -6,6 +6,8 @@
     "homePagePopupEdit": "Edit decision maker",
     "homePagePopupDelete": "Delete decision maker",
 
+    "themePageTitle": "Themes",
+
     "editPageTitleCreate": "Create Decision Maker",
     "editPageTitleEdit": "Edit Decision Maker",
     "editPageFinishCreate": "Finish Creating",

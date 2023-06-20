@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:helpmedecide/view/navigation_page.dart';
 
 import 'model/controllers.dart';
-
-import 'view/home_page.dart';
 
 void main() async {
   await GetStorage.init();
@@ -46,7 +45,7 @@ class DecisionApp extends StatelessWidget {
       locale: localeController.currentLocale.value,
       fallbackLocale: const Locale("en", "US"),
       onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
-      home: const HomePage(),
+      home: const NavigationPage(),
     );
   }
 }
