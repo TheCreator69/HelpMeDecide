@@ -83,6 +83,7 @@ class _EditPageState extends State<EditPage> {
                         Card(
                           elevation: 4.0,
                           child: ListTile(
+                            leading: const Icon(Icons.add),
                             title: Text(
                               AppLocalizations.of(context)!.editPageAddOption,
                               style:
@@ -98,12 +99,12 @@ class _EditPageState extends State<EditPage> {
                         Card(
                           elevation: 4.0,
                           child: ListTile(
+                            leading: const Icon(Icons.check),
                             title: Text(
                               widget.getFinishButtonText(context),
                               style:
                                   const TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            textColor: Theme.of(context).hintColor,
                             onTap: () {
                               if (_formKey.currentState!.validate()) {
                                 String title =
