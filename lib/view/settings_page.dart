@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
+import 'package:helpmedecide/model/controllers.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../model/controllers.dart';
 
 class SettingsPage extends StatelessWidget {
   SettingsPage({super.key});

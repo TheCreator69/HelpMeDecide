@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:helpmedecide/model/controllers.dart';
-
-import 'types.dart';
+import 'package:helpmedecide/model/types.dart';
 
 class DecisionSession {
   DecisionSession({required this.decisionMakerIndex});
