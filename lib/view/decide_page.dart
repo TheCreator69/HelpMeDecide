@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:helpmedecide/model/decision_session.dart';
+import 'package:helpmedecide/model/sessions.dart';
 import 'package:helpmedecide/view/edit_page.dart';
 
 import '../model/controllers.dart';
-import '../model/decision_maker.dart';
+import '../model/types.dart';
 
 class DecidePage extends StatefulWidget {
   DecidePage({super.key, required this.decisionMakerIndex}) {

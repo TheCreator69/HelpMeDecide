@@ -7,7 +7,7 @@ import 'edit_page.dart';
 import 'settings_page.dart';
 
 import '../model/controllers.dart';
-import '../model/decision_maker.dart';
+import '../model/types.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
