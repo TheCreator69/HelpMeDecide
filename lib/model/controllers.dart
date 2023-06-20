@@ -13,6 +13,9 @@ class DecisionAppBindings extends Bindings {
   void dependencies() {
     Get.lazyPut(() => DecisionMakersController());
     Get.lazyPut(() => StorageController());
+    Get.lazyPut(() => ThemeController());
+    Get.lazyPut(() => LocaleController());
+    Get.lazyPut(() => SettingsController());
   }
 }
 
@@ -25,11 +28,6 @@ class DecisionMakersController extends GetxController {
 
   void addDecisionMaker(DecisionMaker maker) {
     decisionMakers.add(maker);
-  }
-
-  void addDecisionMakerByInfo(String title, List<String> decisions) {
-    DecisionMaker newDecisionMaker = createDecisionMaker(title, decisions);
-    decisionMakers.add(newDecisionMaker);
   }
 
   DecisionMaker createDecisionMaker(String title, List<String> decisions) {
@@ -74,7 +72,6 @@ class DecisionMakersController extends GetxController {
   }
 }
 
-// Move loading and storing of any and all data from the other controllers to this controller
 class StorageController extends GetxController {
   final _box = GetStorage();
 
@@ -131,17 +128,24 @@ class StorageController extends GetxController {
     await _box.remove("d_${decisionMaker.id}_title");
     await _box.remove("d_${decisionMaker.id}_decisions");
   }
+
+  dynamic loadValueByKey(String key, dynamic fallback) {
+    return _box.read(key) ?? fallback;
+  }
+
+  void saveKeyValuePair(String key, dynamic value) async {
+    await _box.write(key, value);
+  }
 }
 
-// Combine ThemeController and LocaleController to SettingsController
 class ThemeController extends GetxController {
-  final GetStorage _box = GetStorage();
-
   final String _themeKey = "theme";
+
   Rx<ThemeMode> currentThemeMode = ThemeMode.system.obs;
 
   ThemeMode loadThemeMode() {
-    final String themeValue = _box.read(_themeKey) ?? "system";
+    final String themeValue =
+        Get.find<StorageController>().loadValueByKey(_themeKey, "system");
     switch (themeValue) {
       case "system":
         currentThemeMode.value = ThemeMode.system;
@@ -175,7 +179,8 @@ class ThemeController extends GetxController {
         themeValue = "system";
         break;
     }
-    _box.write(_themeKey, themeValue);
+
+    Get.find<StorageController>().saveKeyValuePair(_themeKey, themeValue);
   }
 
   void applyThemeMode(ThemeMode themeMode) {
@@ -185,7 +190,6 @@ class ThemeController extends GetxController {
 }
 
 class LocaleController extends GetxController {
-  final GetStorage _box = GetStorage();
   final String _localeKey = "locale";
   final String _localeModeKey = "localeMode";
 
@@ -193,18 +197,21 @@ class LocaleController extends GetxController {
   Rx<bool> usingSystemLocale = true.obs;
 
   void loadLocaleSettings() {
-    final bool isUsingSystemLocale = _box.read(_localeModeKey) ?? true;
+    final bool isUsingSystemLocale =
+        Get.find<StorageController>().loadValueByKey(_localeModeKey, true);
     usingSystemLocale.value = isUsingSystemLocale;
 
-    List<String> loadedLocaleInfo =
-        (_box.read(_localeKey) ?? "en-US").toString().split("-");
+    List<String> loadedLocaleInfo = Get.find<StorageController>()
+        .loadValueByKey(_localeKey, "en-US")
+        .toString()
+        .split("-");
     currentLocale.value = Locale(loadedLocaleInfo[0],
         loadedLocaleInfo.length > 1 ? loadedLocaleInfo[1] : null);
   }
 
   void saveLocale(Locale locale) {
     String localeValue = locale.toLanguageTag();
-    _box.write(_localeKey, localeValue);
+    Get.find<StorageController>().saveKeyValuePair(_localeKey, localeValue);
   }
 
   void applyLocale(Locale locale) {
@@ -213,7 +220,8 @@ class LocaleController extends GetxController {
   }
 
   void saveIsUsingSystemLocale(bool isUsingSystemLocale) {
-    _box.write(_localeModeKey, isUsingSystemLocale);
+    Get.find<StorageController>()
+        .saveKeyValuePair(_localeModeKey, isUsingSystemLocale);
   }
 
   void applyIsUsingSystemLocale(bool isUsingSystemLocale) {
