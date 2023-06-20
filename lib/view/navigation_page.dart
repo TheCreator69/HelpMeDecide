@@ -15,7 +15,7 @@ class NavigationPageState extends State<NavigationPage> {
   Widget getPageByPageIndex(int index) {
     switch (index) {
       case 0:
-        return const HomePage();
+        return HomePage();
       case 1:
         return const ThemePage();
       default:

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
+import 'package:helpmedecide/model/controllers.dart';
 import 'package:helpmedecide/view/settings_page.dart';
 
 class ThemePage extends StatelessWidget {
@@ -9,30 +10,32 @@ class ThemePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.themePageTitle),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Get.to(() => SettingsPage());
-              },
-              icon: const Icon(Icons.settings))
-        ],
-      ),
-      body: ListView(
-          padding: const EdgeInsets.all(16.0),
-          children: const <Widget>[
-            ThemeCard(),
-            ThemeCard(),
-            ThemeCard(),
-            ThemeCard(),
-          ]),
-    );
+        appBar: AppBar(
+          title: Text(AppLocalizations.of(context)!.themePageTitle),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Get.to(() => SettingsPage());
+                },
+                icon: const Icon(Icons.settings))
+          ],
+        ),
+        body: ListView.builder(
+          shrinkWrap: true,
+          padding: const EdgeInsets.all(8.0),
+          itemCount: Get.find<DecisionThemeController>().availableThemes.length,
+          physics: const ClampingScrollPhysics(),
+          itemBuilder: (context, index) {
+            return ThemeCard(index: index);
+          },
+        ));
   }
 }
 
 class ThemeCard extends StatelessWidget {
-  const ThemeCard({super.key});
+  const ThemeCard({super.key, required this.index});
+
+  final int index;
 
   @override
   Widget build(BuildContext context) {

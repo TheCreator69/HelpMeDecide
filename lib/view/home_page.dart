@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
+import 'package:helpmedecide/view/decide_page.dart';
 
-import 'decide_page.dart';
 import 'edit_page.dart';
 import 'settings_page.dart';
 
@@ -10,16 +10,13 @@ import '../model/controllers.dart';
 import '../model/types.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
+
+  final storageController = Get.find<StorageController>();
+  final decisionMakersController = Get.find<DecisionMakersController>();
 
   @override
   Widget build(BuildContext context) {
-    final storageController = Get.find<StorageController>();
-    final decisionMakersController = Get.find<DecisionMakersController>();
-
-    List<DecisionMaker> loadedList = storageController.loadDecisionMakers();
-    decisionMakersController.setDecisionMakers(loadedList);
-
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.homePageTitle),
@@ -62,10 +59,11 @@ class DecisionMakerListView extends StatefulWidget {
 }
 
 class _DecisionMakerListViewState extends State<DecisionMakerListView> {
+  final decisionMakersController = Get.find<DecisionMakersController>();
+  final decisionThemeController = Get.find<DecisionThemeController>();
+
   @override
   Widget build(BuildContext context) {
-    final decisionMakersController = Get.find<DecisionMakersController>();
-
     return Obx(
       () => Scrollbar(
           child: ListView.builder(
@@ -83,9 +81,9 @@ class _DecisionMakerListViewState extends State<DecisionMakerListView> {
                 horizontalTitleGap: 16.0,
                 trailing: DecisionMakerPopupButton(index: index),
                 onTap: () {
-                  Get.to(() => DecidePage(
-                        decisionMakerIndex: index,
-                      ));
+                  Get.to(() {
+                    DecidePage(decisionMakerIndex: index);
+                  });
                 },
               ));
         },
@@ -97,15 +95,15 @@ class _DecisionMakerListViewState extends State<DecisionMakerListView> {
 enum DecisionMakerPopupItem { edit, delete }
 
 class DecisionMakerPopupButton extends StatelessWidget {
-  const DecisionMakerPopupButton({super.key, required this.index});
+  DecisionMakerPopupButton({super.key, required this.index});
 
   final int index;
 
+  final decisionMakersController = Get.find<DecisionMakersController>();
+  final storageController = Get.find<StorageController>();
+
   @override
   Widget build(BuildContext context) {
-    final decisionMakersController = Get.find<DecisionMakersController>();
-    final storageController = Get.find<StorageController>();
-
     return PopupMenuButton<DecisionMakerPopupItem>(
       onSelected: (DecisionMakerPopupItem item) {
         if (item == DecisionMakerPopupItem.edit) {

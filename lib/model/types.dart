@@ -36,11 +36,10 @@ class DecisionThemeData {
       {required this.id,
       required this.name,
       required this.description,
-      required this.decisionScreen});
+      this.preview});
 
   final int id;
   final String name;
   final String description;
   Image? preview;
-  final Widget decisionScreen;
 }

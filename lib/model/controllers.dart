@@ -14,6 +14,7 @@ class DecisionAppBindings extends Bindings {
     Get.lazyPut(() => DecisionMakersController());
     Get.lazyPut(() => StorageController());
     Get.lazyPut(() => ThemeController());
+    Get.lazyPut(() => DecisionThemeController());
     Get.lazyPut(() => LocaleController());
     Get.lazyPut(() => SettingsController());
   }
@@ -143,7 +144,7 @@ class ThemeController extends GetxController {
 
   Rx<ThemeMode> currentThemeMode = ThemeMode.system.obs;
 
-  ThemeMode loadThemeMode() {
+  void loadThemeMode() {
     final String themeValue =
         Get.find<StorageController>().loadValueByKey(_themeKey, "system");
     switch (themeValue) {
@@ -160,7 +161,6 @@ class ThemeController extends GetxController {
         currentThemeMode.value = ThemeMode.system;
         break;
     }
-    return currentThemeMode.value;
   }
 
   void saveThemeMode(ThemeMode themeMode) {
@@ -186,6 +186,36 @@ class ThemeController extends GetxController {
   void applyThemeMode(ThemeMode themeMode) {
     Get.changeThemeMode(themeMode);
     currentThemeMode.value = themeMode;
+  }
+}
+
+class DecisionThemeController extends GetxController {
+  final String _decisionThemeKey = "decisionTheme";
+
+  Rx<int> currentDecisionThemeID = 0.obs;
+
+  final List<DecisionThemeData> availableThemes = [
+    DecisionThemeData(
+      id: 0,
+      name: "Minimalist",
+      description:
+          "The classic theme. Simple text without any delays. Straightforward and simple.",
+    )
+  ];
+
+  void loadDecisionThemeInfo() {
+    currentDecisionThemeID.value =
+        Get.find<StorageController>().loadValueByKey(_decisionThemeKey, 0);
+  }
+
+  void applyDecisionTheme(int newID) {
+    if (newID >= availableThemes.length) return;
+    currentDecisionThemeID.value = newID;
+  }
+
+  void saveDecisionTheme(int newID) {
+    if (newID >= availableThemes.length) return;
+    Get.find<StorageController>().saveKeyValuePair(_decisionThemeKey, newID);
   }
 }
 
