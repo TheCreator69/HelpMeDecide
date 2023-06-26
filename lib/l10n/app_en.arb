@@ -26,9 +26,11 @@
     "editPageOptionInvalid": "Please input a decision option",
     "editPageAddOption": "Add decision option",
 
-    "decidePageNoDecisionYet": "Decision will appear here...",
-    "decidePageFirstDecisionAction": "Decide!",
-    "decidePageFurtherDecisionActions": "Decide again!",
+    "decidePageClassicNoDecisionYet": "Decision will appear here...",
+    "decidePageClassicFirstDecisionAction": "Decide!",
+    "decidePageClassicFurtherDecisionActions": "Decide again!",
+
+    "decidePageWheelDecisionAction": "Spin the Wheel!",
 
     "settingsPageTitle": "Settings",
 

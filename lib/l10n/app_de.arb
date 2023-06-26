@@ -18,9 +18,11 @@
     "editPageOptionInvalid": "Bitte geben sie eine Möglichkeit ein",
     "editPageAddOption": "Neue Möglichkeit hinzufügen",
 
-    "decidePageNoDecisionYet": "Entscheidung wird hier erscheinen...",
-    "decidePageFirstDecisionAction": "Entscheiden Sie sich!",
-    "decidePageFurtherDecisionActions": "Entscheiden Sie sich nochmal!",
+    "decidePageClassicNoDecisionYet": "Entscheidung wird hier erscheinen...",
+    "decidePageClassicFirstDecisionAction": "Entscheiden Sie sich!",
+    "decidePageClassicFurtherDecisionActions": "Entscheiden Sie sich nochmal!",
+
+    "decidePageWheelDecisionAction": "Drehen Sie das Rad!",
 
     "settingsPageTitle": "Einstellungen",
 

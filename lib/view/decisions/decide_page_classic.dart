@@ -24,9 +24,10 @@ class _DecidePageClassicState extends State<DecidePageClassic> {
 
   String getDecisionActionText(BuildContext context) {
     if (decisionMade) {
-      return AppLocalizations.of(context)!.decidePageFurtherDecisionActions;
+      return AppLocalizations.of(context)!
+          .decidePageClassicFurtherDecisionActions;
     } else {
-      return AppLocalizations.of(context)!.decidePageFirstDecisionAction;
+      return AppLocalizations.of(context)!.decidePageClassicFirstDecisionAction;
     }
   }
 
@@ -55,7 +56,8 @@ class _DecidePageClassicState extends State<DecidePageClassic> {
             Text(
               decisionMade
                   ? widget.decisionSession.getDecisionText(context)
-                  : AppLocalizations.of(context)!.decidePageNoDecisionYet,
+                  : AppLocalizations.of(context)!
+                      .decidePageClassicNoDecisionYet,
               style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
