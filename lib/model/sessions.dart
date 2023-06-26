@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:helpmedecide/model/controllers.dart';
 import 'package:helpmedecide/model/types.dart';
@@ -12,9 +11,7 @@ class DecisionSession {
   final decisionMakersController = Get.find<DecisionMakersController>();
   int decisionMakerIndex;
 
-  int decisionIndex = 0;
-  bool decisionMade = false;
-
+  int _decisionIndex = 0;
   List<int> previousDecisions = [];
 
   DecisionMaker getDecisionMaker() {
@@ -22,17 +19,25 @@ class DecisionSession {
   }
 
   void makeDecision() {
-    decisionMade = true;
-    decisionIndex = _getRandomDecisionIndex();
+    _decisionIndex = _getRandomDecisionIndex();
   }
 
   int _getRandomDecisionIndex() {
     int maxDecisions = getDecisionMaker().getAmountOfDecisions();
 
-    int index = -1;
-    while (index == -1 || previousDecisions.contains(index)) {
-      index = Random().nextInt(maxDecisions);
+    /* 
+    If the amount of options has been shortened due to edits while this session is ongoing,
+    empty it except for the first index, so that the do-while loop below actually finishes.
+    This caused a crash before, hence why this code is here.
+    */
+    if (previousDecisions.length >= maxDecisions) {
+      previousDecisions.removeRange(1, maxDecisions);
     }
+
+    int index = -1;
+    do {
+      index = Random().nextInt(maxDecisions);
+    } while (previousDecisions.contains(index));
 
     if (previousDecisions.length == maxDecisions - 1) {
       previousDecisions.clear();
@@ -43,18 +48,7 @@ class DecisionSession {
   }
 
   String getDecisionText(BuildContext context) {
-    if (decisionMade) {
-      return getDecisionMaker().getDecisionAt(decisionIndex);
-    }
-    return AppLocalizations.of(context)!.decidePageNoDecisionYet;
-  }
-
-  String getDecisionActionText(BuildContext context) {
-    if (decisionMade) {
-      return AppLocalizations.of(context)!.decidePageFurtherDecisionActions;
-    } else {
-      return AppLocalizations.of(context)!.decidePageFirstDecisionAction;
-    }
+    return getDecisionMaker().getDecisionAt(_decisionIndex);
   }
 }
 

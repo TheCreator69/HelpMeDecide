@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:helpmedecide/model/controllers.dart';
 import 'package:helpmedecide/model/sessions.dart';
-import 'package:helpmedecide/model/types.dart';
 import 'package:helpmedecide/view/edit_page.dart';
 
 class DecidePage extends StatefulWidget {
@@ -20,21 +20,26 @@ class DecidePage extends StatefulWidget {
 class _DecidePageState extends State<DecidePage> {
   final decisionMakersController = Get.find<DecisionMakersController>();
 
-  DecisionMaker getDecisionMaker() {
-    return decisionMakersController
-        .getDecisionMakerAt(widget.decisionMakerIndex);
+  bool decisionMade = false;
+
+  String getDecisionActionText(BuildContext context) {
+    if (decisionMade) {
+      return AppLocalizations.of(context)!.decidePageFurtherDecisionActions;
+    } else {
+      return AppLocalizations.of(context)!.decidePageFirstDecisionAction;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(getDecisionMaker().title),
+          title: Text(widget.decisionSession.getDecisionMaker().title),
           actions: [
             IconButton(
                 onPressed: () {
                   Get.to(() => EditPage(
-                      decisionMaker: getDecisionMaker(),
+                      decisionMaker: widget.decisionSession.getDecisionMaker(),
                       isCreatingDecisionMaker: false));
                 },
                 icon: const Icon(Icons.edit))
@@ -48,7 +53,9 @@ class _DecidePageState extends State<DecidePage> {
               child: Container(),
             ),
             Text(
-              widget.decisionSession.getDecisionText(context),
+              decisionMade
+                  ? widget.decisionSession.getDecisionText(context)
+                  : AppLocalizations.of(context)!.decidePageNoDecisionYet,
               style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
@@ -60,7 +67,9 @@ class _DecidePageState extends State<DecidePage> {
                 child: ElevatedButton(
                     onPressed: () {
                       widget.decisionSession.makeDecision();
-                      setState(() {});
+                      setState(() {
+                        decisionMade = true;
+                      });
                     },
                     style: ButtonStyle(
                         elevation: MaterialStateProperty.all(4.0),
@@ -68,8 +77,7 @@ class _DecidePageState extends State<DecidePage> {
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                                 const RoundedRectangleBorder(
                                     borderRadius: BorderRadius.zero))),
-                    child: Text(
-                        widget.decisionSession.getDecisionActionText(context),
+                    child: Text(getDecisionActionText(context),
                         style: const TextStyle(fontSize: 24)))),
           ],
         ));
