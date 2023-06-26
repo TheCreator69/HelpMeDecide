@@ -25,6 +25,7 @@ class SettingsPage extends StatelessWidget {
         ),
         body: ListView(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24.0),
+          physics: const ClampingScrollPhysics(),
           children: [
             Text(AppLocalizations.of(context)!.settingsPageThemeSectionTitle,
                 style: const TextStyle(fontSize: 14)),
