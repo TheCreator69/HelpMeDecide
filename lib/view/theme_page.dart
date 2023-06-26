@@ -84,8 +84,8 @@ class ThemeCard extends StatelessWidget {
                         decisionThemeController.currentDecisionThemeID.value ==
                             index,
                     onChanged: (value) {
-                      decisionThemeController.currentDecisionThemeID.value =
-                          index;
+                      decisionThemeController.applyDecisionTheme(index);
+                      decisionThemeController.saveDecisionTheme(index);
                     },
                   ),
                 ),

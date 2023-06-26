@@ -5,8 +5,8 @@ import 'package:helpmedecide/model/controllers.dart';
 import 'package:helpmedecide/model/sessions.dart';
 import 'package:helpmedecide/view/edit_page.dart';
 
-class DecidePage extends StatefulWidget {
-  DecidePage({super.key, required this.decisionMakerIndex}) {
+class DecidePageWheel extends StatefulWidget {
+  DecidePageWheel({super.key, required this.decisionMakerIndex}) {
     decisionSession = DecisionSession(decisionMakerIndex: decisionMakerIndex);
   }
 
@@ -14,10 +14,10 @@ class DecidePage extends StatefulWidget {
   late final DecisionSession decisionSession;
 
   @override
-  State<DecidePage> createState() => _DecidePageState();
+  State<DecidePageWheel> createState() => _DecidePageWheelState();
 }
 
-class _DecidePageState extends State<DecidePage> {
+class _DecidePageWheelState extends State<DecidePageWheel> {
   final decisionMakersController = Get.find<DecisionMakersController>();
 
   bool decisionMade = false;
