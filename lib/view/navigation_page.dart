@@ -28,13 +28,16 @@ class NavigationPageState extends State<NavigationPage> {
     return Scaffold(
       body: getPageByPageIndex(_pageIndex),
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _pageIndex,
+        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.brush), label: "Themes")
         ],
         onTap: (int index) {
-          _pageIndex = index;
-          setState(() {});
+          setState(() {
+            _pageIndex = index;
+          });
         },
       ),
     );

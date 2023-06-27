@@ -55,10 +55,11 @@ class DecisionApp extends StatelessWidget {
         brightness: Brightness.light,
       ),
       darkTheme: ThemeData(
-        useMaterial3: true,
-        colorScheme: const ColorScheme.dark(),
-        brightness: Brightness.dark,
-      ),
+          useMaterial3: true,
+          colorScheme: const ColorScheme.dark(),
+          brightness: Brightness.dark,
+          bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+              selectedItemColor: Colors.white)),
       themeMode: themeController.currentThemeMode.value,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
