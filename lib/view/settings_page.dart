@@ -12,7 +12,7 @@ class SettingsPage extends StatelessWidget {
   final settingsController = Get.find<SettingsController>();
 
   Future<void> launchURL(Uri url) async {
-    if (!await launchUrl(url)) {
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
       throw Exception('Could not launch $url');
     }
   }
