@@ -7,6 +7,10 @@
     "homePagePopupDelete": "Entscheidungshelfer löschen",
 
     "themePageTitle": "Themes",
+    "themeClassicName": "Minimalistisch",
+    "themeClassicDescription": "Das klassische Theme. Einfacher Text ohne Flair.",
+    "themeWheelName": "Glücksrad",
+    "themeWheelDescription": "Ein mehrfarbiges Rad, das Sie drehen können. Das Segment, auf dem es landet, bestimmt die endgültige Entscheidung.",
 
     "editPageTitleCreate": "Entscheidungshelfer erstellen",
     "editPageTitleEdit": "Entscheidungshelfer bearbeiten",
@@ -17,6 +21,10 @@
     "editPageOptionLabel": "Möglichkeit #{index}",
     "editPageOptionInvalid": "Bitte geben sie eine Möglichkeit ein",
     "editPageAddOption": "Neue Möglichkeit hinzufügen",
+    "editPageCancelDialogTitleCreate": "Möchten Sie wirklich das Erstellen abbrechen?",
+    "editPageCancelDialogTitleEdit": "Möchten Sie wirklich das Bearbeiten abbrechen?",
+    "editPageCancelDialogYes": "Ja",
+    "editPageCancelDialogNo": "Nein",
 
     "decidePageClassicNoDecisionYet": "Entscheidung wird hier erscheinen...",
     "decidePageClassicFirstDecisionAction": "Entscheiden Sie sich!",
@@ -42,10 +50,5 @@
 
     "settingsPageAboutTitle": "Über diese App",
     "settingsPageAboutContent": "Help me Decide v{version}\nCopyright 2023 TheCreator",
-    "settingsPageAboutConfirm": "Okay",
-
-    "themeClassicName": "Minimalistisch",
-    "themeClassicDescription": "Das klassische Theme. Einfacher Text ohne Flair.",
-    "themeWheelName": "Glücksrad",
-    "themeWheelDescription": "Ein mehrfarbiges Rad, das Sie drehen können. Das Segment, auf dem es landet, bestimmt die endgültige Entscheidung."
+    "settingsPageAboutConfirm": "Okay"
 }

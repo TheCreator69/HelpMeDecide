@@ -7,6 +7,10 @@
     "homePagePopupDelete": "Delete decision maker",
 
     "themePageTitle": "Themes",
+    "themeClassicName": "Minimalist",
+    "themeClassicDescription": "The classic theme. Simple text without any flair.",
+    "themeWheelName": "Wheel of Fortune",
+    "themeWheelDescription": "A multi-colored wheel that you can spin. The segment it lands on determines the final decision.",
 
     "editPageTitleCreate": "Create Decision Maker",
     "editPageTitleEdit": "Edit Decision Maker",
@@ -25,6 +29,10 @@
     },
     "editPageOptionInvalid": "Please input a decision option",
     "editPageAddOption": "Add decision option",
+    "editPageCancelDialogTitleCreate": "Do you really want to cancel creating?",
+    "editPageCancelDialogTitleEdit": "Do you really want to cancel editing?",
+    "editPageCancelDialogYes": "Yes",
+    "editPageCancelDialogNo": "No",
 
     "decidePageClassicNoDecisionYet": "Decision will appear here...",
     "decidePageClassicFirstDecisionAction": "Decide!",
@@ -58,10 +66,5 @@
             }
         }
     },
-    "settingsPageAboutConfirm": "Okay",
-
-    "themeClassicName": "Minimalist",
-    "themeClassicDescription": "The classic theme. Simple text without any flair.",
-    "themeWheelName": "Wheel of Fortune",
-    "themeWheelDescription": "A multi-colored wheel that you can spin. The segment it lands on determines the final decision."
+    "settingsPageAboutConfirm": "Okay"
 }
