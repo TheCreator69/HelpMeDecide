@@ -11,7 +11,7 @@ class DecisionSession {
   final decisionMakersController = Get.find<DecisionMakersController>();
   int decisionMakerIndex;
 
-  int _decisionIndex = 0;
+  int decisionIndex = 0;
   List<int> previousDecisions = [];
 
   DecisionMaker getDecisionMaker() {
@@ -19,7 +19,7 @@ class DecisionSession {
   }
 
   void makeDecision() {
-    _decisionIndex = _getRandomDecisionIndex();
+    decisionIndex = _getRandomDecisionIndex();
   }
 
   int _getRandomDecisionIndex() {
@@ -48,7 +48,7 @@ class DecisionSession {
   }
 
   String getDecisionText(BuildContext context) {
-    return getDecisionMaker().getDecisionAt(_decisionIndex);
+    return getDecisionMaker().getDecisionAt(decisionIndex);
   }
 }
 
