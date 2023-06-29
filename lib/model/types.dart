@@ -33,12 +33,8 @@ class DecisionMaker {
 
 class DecisionThemeData {
   DecisionThemeData(
-      {required this.id,
-      required this.name,
-      required this.description,
-      this.preview});
+      {required this.name, required this.description, this.preview});
 
-  final int id;
   final String name;
   final String description;
   Image? preview;

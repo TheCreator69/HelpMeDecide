@@ -202,15 +202,16 @@ class DecisionThemeController extends GetxController {
 
     availableThemes.add(
       DecisionThemeData(
-          id: 0,
+          name: AppLocalizations.of(context)!.themeWheelName,
+          description: AppLocalizations.of(context)!.themeWheelDescription,
+          preview: Image.asset("assets/wheel_thumb.png")),
+    );
+    availableThemes.add(
+      DecisionThemeData(
           name: AppLocalizations.of(context)!.themeClassicName,
           description: AppLocalizations.of(context)!.themeClassicDescription,
           preview: Image.asset("assets/classic_thumb.png")),
     );
-    availableThemes.add(DecisionThemeData(
-        id: 1,
-        name: AppLocalizations.of(context)!.themeWheelName,
-        description: AppLocalizations.of(context)!.themeWheelDescription));
   }
 
   DecisionThemeData getCurrentTheme() {
@@ -220,6 +221,8 @@ class DecisionThemeController extends GetxController {
   Widget getDecisionScreen(int index) {
     switch (currentDecisionThemeID.value) {
       case 0:
+        return DecidePageWheel(decisionMakerIndex: index);
+      case 1:
         return DecidePageClassic(decisionMakerIndex: index);
       default:
         return DecidePageWheel(decisionMakerIndex: index);
