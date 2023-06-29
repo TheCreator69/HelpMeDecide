@@ -56,8 +56,7 @@ class _DecidePageClassicState extends State<DecidePageClassic> {
             Text(
               decisionMade
                   ? widget.decisionSession.getDecisionText(context)
-                  : AppLocalizations.of(context)!
-                      .decidePageClassicNoDecisionYet,
+                  : AppLocalizations.of(context)!.decidePageNoDecisionYet,
               style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),

@@ -34,10 +34,12 @@
     "editPageCancelDialogYes": "Yes",
     "editPageCancelDialogNo": "No",
 
-    "decidePageClassicNoDecisionYet": "Decision will appear here...",
+    "decidePageNoDecisionYet": "Decision will appear here...",
+    
     "decidePageClassicFirstDecisionAction": "Decide!",
     "decidePageClassicFurtherDecisionActions": "Decide again!",
 
+    "decidePageWheelDecisionInProgress": "Spinning...",
     "decidePageWheelDecisionAction": "Spin the Wheel!",
 
     "settingsPageTitle": "Settings",

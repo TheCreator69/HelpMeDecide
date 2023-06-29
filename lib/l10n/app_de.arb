@@ -26,10 +26,12 @@
     "editPageCancelDialogYes": "Ja",
     "editPageCancelDialogNo": "Nein",
 
-    "decidePageClassicNoDecisionYet": "Entscheidung wird hier erscheinen...",
+    "decidePageNoDecisionYet": "Entscheidung wird hier erscheinen...",
+
     "decidePageClassicFirstDecisionAction": "Entscheiden Sie sich!",
     "decidePageClassicFurtherDecisionActions": "Entscheiden Sie sich nochmal!",
 
+    "decidePageWheelDecisionInProgress": "Das Rad dreht sich...",
     "decidePageWheelDecisionAction": "Drehen Sie das Rad!",
 
     "settingsPageTitle": "Einstellungen",
@@ -45,8 +47,8 @@
     "settingsPageLanguageEnglish": "Englisch",
     "settingsPageLanguageGerman": "Deutsch",
 
-    "settingsPageDiscordLink": "Tritt unserem Discord bei!",
-    "settingsPageGitHubLink": "Schau dir den Code auf GitHub an!",
+    "settingsPageDiscordLink": "Treten Sie unserem Discord bei!",
+    "settingsPageGitHubLink": "Schauen Sie sich den Code auf GitHub an!",
 
     "settingsPageAboutTitle": "Über diese App",
     "settingsPageAboutContent": "Help me Decide v{version}\nCopyright 2023 TheCreator",
