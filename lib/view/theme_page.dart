@@ -20,14 +20,15 @@ class ThemePage extends StatelessWidget {
                 icon: const Icon(Icons.settings))
           ],
         ),
-        body: ListView.builder(
+        body: Scrollbar(
+            child: ListView.builder(
           padding: const EdgeInsets.all(8.0),
           itemCount: Get.find<DecisionThemeController>().availableThemes.length,
           physics: const ClampingScrollPhysics(),
           itemBuilder: (context, index) {
             return ThemeCard(index: index);
           },
-        ));
+        )));
   }
 }
 
