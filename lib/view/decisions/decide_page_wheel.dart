@@ -22,6 +22,19 @@ class DecidePageWheel extends StatefulWidget {
 class _DecidePageWheelState extends State<DecidePageWheel> {
   final decisionMakersController = Get.find<DecisionMakersController>();
 
+  final GlobalKey<_AnimatedWheelState> _wheelStateKey =
+      GlobalKey<_AnimatedWheelState>();
+
+  bool decisionMade = false;
+  bool canPressDecisionButton = true;
+
+  void enableDecisionButton() {
+    debugPrint("Button enabled!");
+    setState(() {
+      canPressDecisionButton = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,6 +55,19 @@ class _DecidePageWheelState extends State<DecidePageWheel> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Expanded(
+              child: Container(),
+            ),
+            Text(
+              decisionMade
+                  ? (canPressDecisionButton
+                      ? widget.decisionSession.getDecisionText(context)
+                      : AppLocalizations.of(context)!
+                          .decidePageWheelDecisionInProgress)
+                  : AppLocalizations.of(context)!.decidePageNoDecisionYet,
+              style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            Expanded(
               flex: 2,
               child: Container(),
             ),
@@ -49,19 +75,37 @@ class _DecidePageWheelState extends State<DecidePageWheel> {
               padding:
                   const EdgeInsets.symmetric(vertical: 0.0, horizontal: 16.0),
               child: AnimatedWheel(
+                key: _wheelStateKey,
                 decisionMakerIndex: widget.decisionMakerIndex,
+                enableButton: enableDecisionButton,
               ),
             ),
             Expanded(
+              flex: 2,
               child: Container(),
             ),
             SizedBox(
                 height: 100.0,
                 child: ElevatedButton(
-                    onPressed: () {
-                      widget.decisionSession.makeDecision();
-                      setState(() {});
-                    },
+                    onPressed: canPressDecisionButton
+                        ? () {
+                            int oldDecisionIndex =
+                                widget.decisionSession.decisionIndex;
+                            widget.decisionSession.makeDecision();
+
+                            setState(() {
+                              decisionMade = true;
+                              canPressDecisionButton = false;
+
+                              _wheelStateKey.currentState?.playSpinAnimation(
+                                  oldDecisionIndex,
+                                  widget.decisionSession.decisionIndex,
+                                  widget.decisionSession
+                                      .getDecisionMaker()
+                                      .getAmountOfDecisions());
+                            });
+                          }
+                        : null,
                     style: ButtonStyle(
                         elevation: MaterialStateProperty.all(4.0),
                         shape:
@@ -78,9 +122,13 @@ class _DecidePageWheelState extends State<DecidePageWheel> {
 }
 
 class AnimatedWheel extends StatefulWidget {
-  const AnimatedWheel({super.key, required this.decisionMakerIndex});
+  const AnimatedWheel(
+      {super.key,
+      required this.decisionMakerIndex,
+      required this.enableButton});
 
   final int decisionMakerIndex;
+  final VoidCallback enableButton;
 
   @override
   State<AnimatedWheel> createState() => _AnimatedWheelState();
@@ -89,7 +137,31 @@ class AnimatedWheel extends StatefulWidget {
 class _AnimatedWheelState extends State<AnimatedWheel>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
-  late CurvedAnimation _curvedAnimation;
+  late Tween<double> _rotationInterp;
+  late Animation<double> _rotationAnimation;
+
+  void playSpinAnimation(int oldIndex, int newIndex, int sections) {
+    double rotationEnd = _calculateTweenEnd(oldIndex, newIndex, sections);
+
+    _rotationInterp =
+        Tween<double>(begin: _rotationInterp.end, end: rotationEnd);
+    _rotationAnimation = _rotationInterp.animate(_animationController);
+
+    _animationController.reset();
+    _animationController.forward();
+    setState(() {});
+  }
+
+  double _calculateTweenEnd(int oldIndex, int newIndex, int sections) {
+    double turnAmountPerSection = 1.0 / sections;
+
+    // The options are arranged in a clockwise fashion. Without "sections -", the counter-clockwise distance would be calculated.
+    int noWrapDistance = sections - (newIndex - oldIndex);
+    int wrapDistance = sections - newIndex + oldIndex;
+    int travelDistance = oldIndex <= newIndex ? noWrapDistance : wrapDistance;
+
+    return _rotationInterp.end! + travelDistance * turnAmountPerSection + 1.0;
+  }
 
   @override
   void initState() {
@@ -99,12 +171,14 @@ class _AnimatedWheelState extends State<AnimatedWheel>
       duration: const Duration(seconds: 2),
     );
 
-    _curvedAnimation = CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOut,
-    );
+    _animationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        widget.enableButton();
+      }
+    });
 
-    //_animationController.repeat();
+    _rotationInterp = Tween<double>(begin: 0.0, end: 0.0);
+    _rotationAnimation = _rotationInterp.animate(_animationController);
   }
 
   @override
@@ -116,7 +190,7 @@ class _AnimatedWheelState extends State<AnimatedWheel>
   @override
   Widget build(BuildContext context) {
     return RotationTransition(
-      turns: _curvedAnimation,
+      turns: _rotationAnimation,
       child: WheelBuilder(decisionMakerIndex: widget.decisionMakerIndex),
     );
   }
@@ -162,33 +236,13 @@ class WheelBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WheelOfFortune(
+    return CustomPaint(
+      painter: WheelPainter(
         sections: decisionMakersController
             .getDecisionMakerAt(decisionMakerIndex)
             .getAmountOfDecisions(),
         sectionColors: chosenColors,
-        sectionLabels: shortenedDecisions);
-  }
-}
-
-class WheelOfFortune extends StatelessWidget {
-  final List<Color> sectionColors;
-  final List<String> sectionLabels;
-  final int sections;
-
-  const WheelOfFortune(
-      {super.key,
-      required this.sections,
-      required this.sectionColors,
-      required this.sectionLabels});
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: WheelPainter(
-        sections: sections,
-        sectionColors: sectionColors,
-        sectionLabels: sectionLabels,
+        sectionLabels: shortenedDecisions,
       ),
     );
   }
@@ -212,7 +266,8 @@ class WheelPainter extends CustomPainter {
     final sectionAngle = 2 * pi / sections;
 
     for (var i = 0; i < sections; i++) {
-      final startAngle = i * sectionAngle;
+      // The subtraction is done so that the wheel starts with index 0 segment in the top center
+      final startAngle = i * sectionAngle - (pi / 2 + sectionAngle / 2);
 
       final circleSegment = Path()
         ..moveTo(centerX, centerY)
