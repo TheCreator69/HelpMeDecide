@@ -155,12 +155,20 @@ class _AnimatedWheelState extends State<AnimatedWheel>
   double _calculateTweenEnd(int oldIndex, int newIndex, int sections) {
     double turnAmountPerSection = 1.0 / sections;
 
-    // The options are arranged in a clockwise fashion. Without "sections -", the counter-clockwise distance would be calculated.
-    int noWrapDistance = sections - (newIndex - oldIndex);
-    int wrapDistance = sections - newIndex + oldIndex;
-    int travelDistance = oldIndex <= newIndex ? noWrapDistance : wrapDistance;
+    int noWrapDistance = oldIndex - newIndex;
+    int wrapDistance = sections - (newIndex - oldIndex);
+    /*
+    A "wrap" occurs if the wheel goes over the segment with index 0 while doing the initial turn
+    Indices increase clockwise, but the wheel rotates counter-clockwise.
+    That's why a wrap occurs when the new index is larger than the old index, contrary to a circular array.
+    */
+    int sectionsToTravel = newIndex > oldIndex ? wrapDistance : noWrapDistance;
 
-    return _rotationInterp.end! + travelDistance * turnAmountPerSection + 1.0;
+    int additonalTurns = 1;
+
+    return _rotationInterp.end! +
+        sectionsToTravel * turnAmountPerSection +
+        additonalTurns;
   }
 
   @override
