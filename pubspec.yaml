@@ -41,6 +41,7 @@ dependencies:
   intl: any
   url_launcher: ^6.1.11
   package_info_plus: ^4.0.2
+  logger: ^1.4.0
 
 dev_dependencies:
   flutter_test:
