@@ -19,6 +19,8 @@ The Dart file providing the localizations isn't included in the project by defau
 For Android testing, [set up an Android emulator](https://docs.flutter.dev/get-started/install/windows#android-setup).
 If you wish to test the project for iOS, you need to be running Xcode on a macOS system.
 
+To run all automated tests, use `flutter test`.
+
 ### Licensing
 
 This project uses the [GNU GPLv3](https://choosealicense.com/licenses/gpl-3.0/) license.
