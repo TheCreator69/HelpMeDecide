@@ -1,5 +1,11 @@
 # Help me Decide
 
+[![Discord](https://img.shields.io/discord/765328952495046696)](https://discord.gg/Q27rN7b)
+[![Last Commits](https://img.shields.io/github/last-commit/TheCreator69/HelpMeDecide?logo=git&logoColor=white)](https://github.com/TheCreator69/HelpMeDecide/commits/master)
+[![Lines of code](https://img.shields.io/tokei/lines/github/TheCreator69/HelpMeDecide)](https://github.com/TheCreator69/HelpMeDecide)
+[![Code size](https://img.shields.io/github/languages/code-size/TheCreator69/HelpMeDecide?logo=github&logoColor=white)](https://github.com/TheCreator69/HelpMeDecide)
+[![License](https://img.shields.io/github/license/TheCreator69/HelpMeDecide?logo=open-source-initiative&logoColor=green)](https://github.com/TheCreator69/HelpMeDecide/blob/master/COPYING)
+
 A simple and easy-to-use app that helps you with making decisions.
 Create decision makers with multiple decision options and let the app select a random decision for you!
 This project is in active development at the moment, so except more features to come and existing ones to change!
