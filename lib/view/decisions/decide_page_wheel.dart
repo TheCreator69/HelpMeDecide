@@ -29,7 +29,6 @@ class _DecidePageWheelState extends State<DecidePageWheel> {
   bool canPressDecisionButton = true;
 
   void enableDecisionButton() {
-    debugPrint("Button enabled!");
     setState(() {
       canPressDecisionButton = true;
     });
@@ -145,7 +144,9 @@ class _AnimatedWheelState extends State<AnimatedWheel>
 
     _rotationInterp =
         Tween<double>(begin: _rotationInterp.end, end: rotationEnd);
-    _rotationAnimation = _rotationInterp.animate(_animationController);
+    _rotationAnimation = _rotationInterp
+        .chain(CurveTween(curve: Curves.fastOutSlowIn))
+        .animate(_animationController);
 
     _animationController.reset();
     _animationController.forward();
@@ -164,7 +165,7 @@ class _AnimatedWheelState extends State<AnimatedWheel>
     */
     int sectionsToTravel = newIndex > oldIndex ? wrapDistance : noWrapDistance;
 
-    int additonalTurns = 1;
+    int additonalTurns = 3;
 
     return _rotationInterp.end! +
         sectionsToTravel * turnAmountPerSection +
@@ -176,7 +177,7 @@ class _AnimatedWheelState extends State<AnimatedWheel>
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 3),
     );
 
     _animationController.addStatusListener((status) {
