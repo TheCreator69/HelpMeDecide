@@ -25,15 +25,6 @@ class DecisionSession {
   int _getRandomDecisionIndex() {
     int maxDecisions = getDecisionMaker().getAmountOfDecisions();
 
-    /* 
-    If the amount of options has been shortened due to edits while this session is ongoing,
-    empty it except for the first index, so that the do-while loop below actually finishes.
-    This caused a crash before, hence why this code is here.
-    */
-    if (previousDecisions.length >= maxDecisions) {
-      previousDecisions.removeRange(1, maxDecisions);
-    }
-
     int index = -1;
     do {
       index = Random().nextInt(maxDecisions);
