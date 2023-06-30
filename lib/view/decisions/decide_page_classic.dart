@@ -3,7 +3,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:helpmedecide/model/controllers.dart';
 import 'package:helpmedecide/model/sessions.dart';
-import 'package:helpmedecide/view/edit_page.dart';
 
 class DecidePageClassic extends StatefulWidget {
   DecidePageClassic({super.key, required this.decisionMakerIndex}) {
@@ -36,15 +35,6 @@ class _DecidePageClassicState extends State<DecidePageClassic> {
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.decisionSession.getDecisionMaker().title),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  Get.to(() => EditPage(
-                      decisionMaker: widget.decisionSession.getDecisionMaker(),
-                      isCreatingDecisionMaker: false));
-                },
-                icon: const Icon(Icons.edit))
-          ],
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
