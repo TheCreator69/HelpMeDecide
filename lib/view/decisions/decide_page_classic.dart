@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
-import 'package:helpmedecide/model/controllers.dart';
 import 'package:helpmedecide/model/sessions.dart';
 import 'package:helpmedecide/model/types.dart';
 
@@ -18,8 +16,6 @@ class DecidePageClassic extends StatefulWidget {
 }
 
 class _DecidePageClassicState extends State<DecidePageClassic> {
-  final decisionMakersController = Get.find<DecisionMakersController>();
-
   bool decisionMade = false;
 
   String getDecisionActionText(BuildContext context) {

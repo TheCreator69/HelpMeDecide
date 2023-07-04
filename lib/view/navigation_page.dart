@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:helpmedecide/model/controllers.dart';
 import 'package:helpmedecide/view/home_page.dart';
 import 'package:helpmedecide/view/theme_page.dart';
 
@@ -15,7 +17,10 @@ class NavigationPageState extends State<NavigationPage> {
   Widget getPageByPageIndex(int index) {
     switch (index) {
       case 0:
-        return HomePage();
+        return HomePage(
+          decisionMakersController: Get.find<DecisionMakersController>(),
+          storageController: Get.find<StorageController>(),
+        );
       case 1:
         return const ThemePage();
       default:

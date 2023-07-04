@@ -2,8 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
-import 'package:helpmedecide/model/controllers.dart';
 import 'package:helpmedecide/model/sessions.dart';
 import 'package:helpmedecide/model/types.dart';
 
@@ -20,8 +18,6 @@ class DecidePageWheel extends StatefulWidget {
 }
 
 class _DecidePageWheelState extends State<DecidePageWheel> {
-  final decisionMakersController = Get.find<DecisionMakersController>();
-
   final GlobalKey<_AnimatedWheelState> _wheelStateKey =
       GlobalKey<_AnimatedWheelState>();
 
@@ -193,7 +189,6 @@ class _AnimatedWheelState extends State<AnimatedWheel>
 }
 
 class WheelBuilder extends StatelessWidget {
-  final decisionMakersController = Get.find<DecisionMakersController>();
   final DecisionMaker decisionMaker;
 
   WheelBuilder({super.key, required this.decisionMaker}) {

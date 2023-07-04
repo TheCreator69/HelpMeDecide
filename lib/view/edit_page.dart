@@ -43,8 +43,9 @@ class EditPage extends StatefulWidget {
 class _EditPageState extends State<EditPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final decisionMakersController = Get.find<DecisionMakersController>();
-  final storageController = Get.find<StorageController>();
+  final IDecisionMakersController decisionMakersController =
+      Get.find<DecisionMakersController>();
+  final IStorageController storageController = Get.find<StorageController>();
 
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
 

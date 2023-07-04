@@ -7,10 +7,13 @@ import 'package:helpmedecide/view/edit_page.dart';
 import 'package:helpmedecide/view/settings_page.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({super.key});
+  HomePage(
+      {super.key,
+      required this.storageController,
+      required this.decisionMakersController});
 
-  final storageController = Get.find<StorageController>();
-  final decisionMakersController = Get.find<DecisionMakersController>();
+  final IStorageController storageController;
+  final IDecisionMakersController decisionMakersController;
   final decisionThemeController = Get.find<DecisionThemeController>();
 
   @override
@@ -35,7 +38,9 @@ class HomePage extends StatelessWidget {
             AppLocalizations.of(context)!.homePageEmpty,
             textAlign: TextAlign.center,
           )),
-          child: const DecisionMakerListView())),
+          child: DecisionMakerListView(
+              decisionMakersController: decisionMakersController,
+              storageController: storageController))),
       floatingActionButton: FloatingActionButton(
         onPressed: (() {
           Get.to(() => EditPage(
@@ -52,15 +57,23 @@ class HomePage extends StatelessWidget {
 }
 
 class DecisionMakerListView extends StatefulWidget {
-  const DecisionMakerListView({super.key});
+  const DecisionMakerListView(
+      {super.key,
+      required this.decisionMakersController,
+      required this.storageController});
+
+  final IDecisionMakersController decisionMakersController;
+  final IStorageController storageController;
 
   @override
   State<DecisionMakerListView> createState() => _DecisionMakerListViewState();
 }
 
 class _DecisionMakerListViewState extends State<DecisionMakerListView> {
-  final decisionMakersController = Get.find<DecisionMakersController>();
-  final decisionThemeController = Get.find<DecisionThemeController>();
+  final IDecisionMakersController decisionMakersController =
+      Get.find<DecisionMakersController>();
+  final IDecisionThemeController decisionThemeController =
+      Get.find<DecisionThemeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +92,11 @@ class _DecisionMakerListViewState extends State<DecisionMakerListView> {
                 title: Text(
                     decisionMakersController.getDecisionMakerAt(index).title),
                 horizontalTitleGap: 16.0,
-                trailing: DecisionMakerPopupButton(index: index),
+                trailing: DecisionMakerPopupButton(
+                  index: index,
+                  decisionMakersController: widget.decisionMakersController,
+                  storageController: widget.storageController,
+                ),
                 onTap: () {
                   Get.to(() => decisionThemeController.getDecisionScreen(
                       decisionMakersController.getDecisionMakerAt(index)));
@@ -94,12 +111,16 @@ class _DecisionMakerListViewState extends State<DecisionMakerListView> {
 enum DecisionMakerPopupItem { edit, delete }
 
 class DecisionMakerPopupButton extends StatelessWidget {
-  DecisionMakerPopupButton({super.key, required this.index});
+  const DecisionMakerPopupButton(
+      {super.key,
+      required this.index,
+      required this.decisionMakersController,
+      required this.storageController});
 
   final int index;
 
-  final decisionMakersController = Get.find<DecisionMakersController>();
-  final storageController = Get.find<StorageController>();
+  final IDecisionMakersController decisionMakersController;
+  final IStorageController storageController;
 
   @override
   Widget build(BuildContext context) {

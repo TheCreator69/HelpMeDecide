@@ -12,26 +12,46 @@ import 'package:package_info_plus/package_info_plus.dart';
 class DecisionAppBindings extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => DecisionMakersController());
     Get.lazyPut(() => StorageController());
-    Get.lazyPut(() => ThemeController());
-    Get.lazyPut(() => DecisionThemeController());
-    Get.lazyPut(() => LocaleController());
+    Get.lazyPut(() => DecisionMakersController());
+    Get.lazyPut(() =>
+        ThemeController(storageController: Get.find<StorageController>()));
+    Get.lazyPut(() => DecisionThemeController(
+        storageController: Get.find<StorageController>()));
+    Get.lazyPut(() =>
+        LocaleController(storageController: Get.find<StorageController>()));
     Get.lazyPut(() => SettingsController());
   }
 }
 
-class DecisionMakersController extends GetxController {
+abstract class IDecisionMakersController {
+  void setDecisionMakers(List<DecisionMaker> newDecisionMakers);
+  void addDecisionMaker(DecisionMaker maker);
+  DecisionMaker createDecisionMaker(String title, List<String> decisions);
+  void changeDecisionMaker(int id, String title, List<String> decisions);
+  void removeDecisionMaker(DecisionMaker decisionMaker);
+
+  RxList<dynamic> get decisionMakers;
+  DecisionMaker getDecisionMakerAt(int index);
+  int getAmountOfDecisionMakers();
+}
+
+class DecisionMakersController extends GetxController
+    implements IDecisionMakersController {
+  @override
   RxList<dynamic> decisionMakers = [].obs;
 
+  @override
   void setDecisionMakers(List<DecisionMaker> newDecisionMakers) {
     decisionMakers = RxList<dynamic>(newDecisionMakers);
   }
 
+  @override
   void addDecisionMaker(DecisionMaker maker) {
     decisionMakers.add(maker);
   }
 
+  @override
   DecisionMaker createDecisionMaker(String title, List<String> decisions) {
     List<dynamic> takenIDs = _getTakenIDs();
 
@@ -45,6 +65,7 @@ class DecisionMakersController extends GetxController {
     return decisionMaker;
   }
 
+  @override
   void changeDecisionMaker(int id, String title, List<String> decisions) {
     List<dynamic> takenIDs = _getTakenIDs();
     if (!takenIDs.contains(id)) {
@@ -57,14 +78,17 @@ class DecisionMakersController extends GetxController {
     decisionMakers[index] = maker;
   }
 
+  @override
   void removeDecisionMaker(DecisionMaker decisionMaker) {
     decisionMakers.remove(decisionMaker);
   }
 
+  @override
   DecisionMaker getDecisionMakerAt(int index) {
     return decisionMakers[index];
   }
 
+  @override
   int getAmountOfDecisionMakers() {
     return decisionMakers.length;
   }
@@ -74,11 +98,20 @@ class DecisionMakersController extends GetxController {
   }
 }
 
-class StorageController extends GetxController {
+abstract class IStorageController {
+  List<DecisionMaker> loadDecisionMakers();
+  void saveDecisionMaker(DecisionMaker decisionMaker);
+  Future<void> saveRemovalOfDecisionMaker(DecisionMaker decisionMaker);
+  dynamic loadValueByKey(String key, dynamic fallback);
+  Future<void> saveKeyValuePair(String key, dynamic value);
+}
+
+class StorageController extends GetxController implements IStorageController {
   final _box = GetStorage();
 
   static const idKey = "ids";
 
+  @override
   List<DecisionMaker> loadDecisionMakers() {
     List<dynamic> dIDs = _box.read(idKey) ?? [];
 
@@ -99,6 +132,7 @@ class StorageController extends GetxController {
     return decisionMakers;
   }
 
+  @override
   void saveDecisionMaker(DecisionMaker decisionMaker) {
     _saveDecisionMakerID(decisionMaker);
     _saveDecisionMakerInfo(decisionMaker);
@@ -120,7 +154,8 @@ class StorageController extends GetxController {
         "d_${decisionMaker.id}_decisions", decisionMaker.getDecisions());
   }
 
-  void saveRemovalOfDecisionMaker(DecisionMaker decisionMaker) async {
+  @override
+  Future<void> saveRemovalOfDecisionMaker(DecisionMaker decisionMaker) async {
     List<dynamic>? decisionMakerIDs = _box.read(idKey) ?? [];
 
     decisionMakerIDs.remove(decisionMaker.id.toString());
@@ -131,23 +166,39 @@ class StorageController extends GetxController {
     await _box.remove("d_${decisionMaker.id}_decisions");
   }
 
+  @override
   dynamic loadValueByKey(String key, dynamic fallback) {
     return _box.read(key) ?? fallback;
   }
 
-  void saveKeyValuePair(String key, dynamic value) async {
+  @override
+  Future<void> saveKeyValuePair(String key, dynamic value) async {
     await _box.write(key, value);
   }
 }
 
-class ThemeController extends GetxController {
+abstract class IThemeController {
+  Rx<ThemeMode> get currentThemeMode;
+
+  void loadThemeMode();
+  void saveThemeMode(ThemeMode themeMode);
+  void applyThemeMode(ThemeMode themeMode);
+}
+
+class ThemeController extends GetxController implements IThemeController {
   final String _themeKey = "theme";
 
+  final IStorageController storageController;
+
+  @override
   Rx<ThemeMode> currentThemeMode = ThemeMode.system.obs;
 
+  ThemeController({required this.storageController});
+
+  @override
   void loadThemeMode() {
     final String themeValue =
-        Get.find<StorageController>().loadValueByKey(_themeKey, "system");
+        storageController.loadValueByKey(_themeKey, "system");
     switch (themeValue) {
       case "system":
         currentThemeMode.value = ThemeMode.system;
@@ -164,6 +215,7 @@ class ThemeController extends GetxController {
     }
   }
 
+  @override
   void saveThemeMode(ThemeMode themeMode) {
     String themeValue = "";
     switch (themeMode) {
@@ -181,22 +233,44 @@ class ThemeController extends GetxController {
         break;
     }
 
-    Get.find<StorageController>().saveKeyValuePair(_themeKey, themeValue);
+    storageController.saveKeyValuePair(_themeKey, themeValue);
   }
 
+  @override
   void applyThemeMode(ThemeMode themeMode) {
     Get.changeThemeMode(themeMode);
     currentThemeMode.value = themeMode;
   }
 }
 
-class DecisionThemeController extends GetxController {
+abstract class IDecisionThemeController {
+  Rx<int> get currentDecisionThemeID;
+
+  void populateAvailableThemes(BuildContext context);
+
+  DecisionThemeData getCurrentTheme();
+
+  Widget getDecisionScreen(DecisionMaker decisionMaker);
+
+  void loadDecisionThemeInfo();
+  void applyDecisionTheme(int newID);
+  void saveDecisionTheme(int newID);
+}
+
+class DecisionThemeController extends GetxController
+    implements IDecisionThemeController {
   final String _decisionThemeKey = "decisionTheme";
 
+  @override
   Rx<int> currentDecisionThemeID = 0.obs;
 
   final List<DecisionThemeData> availableThemes = [];
 
+  final IStorageController storageController;
+
+  DecisionThemeController({required this.storageController});
+
+  @override
   void populateAvailableThemes(BuildContext context) {
     availableThemes.clear();
 
@@ -214,10 +288,12 @@ class DecisionThemeController extends GetxController {
     );
   }
 
+  @override
   DecisionThemeData getCurrentTheme() {
     return availableThemes[currentDecisionThemeID.value];
   }
 
+  @override
   Widget getDecisionScreen(DecisionMaker decisionMaker) {
     switch (currentDecisionThemeID.value) {
       case 0:
@@ -229,35 +305,60 @@ class DecisionThemeController extends GetxController {
     }
   }
 
+  @override
   void loadDecisionThemeInfo() {
     currentDecisionThemeID.value =
-        Get.find<StorageController>().loadValueByKey(_decisionThemeKey, 0);
+        storageController.loadValueByKey(_decisionThemeKey, 0);
   }
 
+  @override
   void applyDecisionTheme(int newID) {
     if (newID >= availableThemes.length) return;
     currentDecisionThemeID.value = newID;
   }
 
+  @override
   void saveDecisionTheme(int newID) {
     if (newID >= availableThemes.length) return;
-    Get.find<StorageController>().saveKeyValuePair(_decisionThemeKey, newID);
+    storageController.saveKeyValuePair(_decisionThemeKey, newID);
   }
 }
 
-class LocaleController extends GetxController {
+abstract class ILocaleController {
+  Rx<Locale> get currentLocale;
+  Rx<bool> get usingSystemLocale;
+
+  void loadLocaleSettings();
+
+  void saveLocale(Locale locale);
+  void applyLocale(Locale locale);
+
+  void saveIsUsingSystemLocale(bool isUsingSystemLocale);
+  void applyIsUsingSystemLocale(bool isUsingSystemLocale);
+
+  String getLocaleDisplayText(Locale locale, BuildContext context);
+}
+
+class LocaleController extends GetxController implements ILocaleController {
   final String _localeKey = "locale";
   final String _localeModeKey = "localeMode";
 
+  @override
   Rx<Locale> currentLocale = (Get.deviceLocale ?? Get.fallbackLocale!).obs;
+  @override
   Rx<bool> usingSystemLocale = true.obs;
 
+  final IStorageController storageController;
+
+  LocaleController({required this.storageController});
+
+  @override
   void loadLocaleSettings() {
     final bool isUsingSystemLocale =
-        Get.find<StorageController>().loadValueByKey(_localeModeKey, true);
+        storageController.loadValueByKey(_localeModeKey, true);
     usingSystemLocale.value = isUsingSystemLocale;
 
-    List<String> loadedLocaleInfo = Get.find<StorageController>()
+    List<String> loadedLocaleInfo = storageController
         .loadValueByKey(_localeKey, "en-US")
         .toString()
         .split("-");
@@ -265,21 +366,24 @@ class LocaleController extends GetxController {
         loadedLocaleInfo.length > 1 ? loadedLocaleInfo[1] : null);
   }
 
+  @override
   void saveLocale(Locale locale) {
     String localeValue = locale.toLanguageTag();
-    Get.find<StorageController>().saveKeyValuePair(_localeKey, localeValue);
+    storageController.saveKeyValuePair(_localeKey, localeValue);
   }
 
+  @override
   void applyLocale(Locale locale) {
     Get.updateLocale(locale);
     currentLocale.value = locale;
   }
 
+  @override
   void saveIsUsingSystemLocale(bool isUsingSystemLocale) {
-    Get.find<StorageController>()
-        .saveKeyValuePair(_localeModeKey, isUsingSystemLocale);
+    storageController.saveKeyValuePair(_localeModeKey, isUsingSystemLocale);
   }
 
+  @override
   void applyIsUsingSystemLocale(bool isUsingSystemLocale) {
     usingSystemLocale.value = isUsingSystemLocale;
     if (isUsingSystemLocale) {
@@ -291,6 +395,7 @@ class LocaleController extends GetxController {
     }
   }
 
+  @override
   String getLocaleDisplayText(Locale locale, BuildContext context) {
     final Map<Locale, String> localeToDisplayText = {
       const Locale("en", "US"):
@@ -303,9 +408,14 @@ class LocaleController extends GetxController {
   }
 }
 
-class SettingsController extends GetxController {
+abstract class ISettingsController {
+  Future<void> retrieveAppVersion();
+}
+
+class SettingsController extends GetxController implements ISettingsController {
   late final String appVersion;
 
+  @override
   Future<void> retrieveAppVersion() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     appVersion = packageInfo.version;

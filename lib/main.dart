@@ -19,15 +19,16 @@ void main() async {
   List<DecisionMaker> loadedList = storageController.loadDecisionMakers();
   decisionMakersController.setDecisionMakers(loadedList);
 
-  Get.put(LocaleController());
+  Get.put(LocaleController(storageController: Get.find<StorageController>()));
   final localeController = Get.find<LocaleController>();
   localeController.loadLocaleSettings();
 
-  Get.put(ThemeController());
+  Get.put(ThemeController(storageController: Get.find<StorageController>()));
   final themeController = Get.find<ThemeController>();
   themeController.loadThemeMode();
 
-  Get.put(DecisionThemeController());
+  Get.put(DecisionThemeController(
+      storageController: Get.find<StorageController>()));
   final decisionThemeController = Get.find<DecisionThemeController>();
   decisionThemeController.loadDecisionThemeInfo();
 
