@@ -81,8 +81,8 @@ class _DecisionMakerListViewState extends State<DecisionMakerListView> {
                 horizontalTitleGap: 16.0,
                 trailing: DecisionMakerPopupButton(index: index),
                 onTap: () {
-                  Get.to(
-                      () => decisionThemeController.getDecisionScreen(index));
+                  Get.to(() => decisionThemeController.getDecisionScreen(
+                      decisionMakersController.getDecisionMakerAt(index)));
                 },
               ));
         },

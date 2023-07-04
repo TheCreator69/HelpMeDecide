@@ -3,13 +3,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:helpmedecide/model/controllers.dart';
 import 'package:helpmedecide/model/sessions.dart';
+import 'package:helpmedecide/model/types.dart';
 
 class DecidePageClassic extends StatefulWidget {
-  DecidePageClassic({super.key, required this.decisionMakerIndex}) {
-    decisionSession = DecisionSession(decisionMakerIndex: decisionMakerIndex);
+  DecidePageClassic({super.key, required this.decisionMaker}) {
+    decisionSession = DecisionSession(decisionMaker: decisionMaker);
   }
 
-  final int decisionMakerIndex;
+  final DecisionMaker decisionMaker;
   late final DecisionSession decisionSession;
 
   @override
@@ -34,7 +35,7 @@ class _DecidePageClassicState extends State<DecidePageClassic> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.decisionSession.getDecisionMaker().title),
+          title: Text(widget.decisionMaker.title),
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -45,7 +46,7 @@ class _DecidePageClassicState extends State<DecidePageClassic> {
             ),
             Text(
               decisionMade
-                  ? widget.decisionSession.getDecisionText(context)
+                  ? widget.decisionSession.getDecisionText()
                   : AppLocalizations.of(context)!.decidePageNoDecisionYet,
               style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,

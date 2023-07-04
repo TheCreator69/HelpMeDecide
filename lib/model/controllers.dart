@@ -218,14 +218,14 @@ class DecisionThemeController extends GetxController {
     return availableThemes[currentDecisionThemeID.value];
   }
 
-  Widget getDecisionScreen(int index) {
+  Widget getDecisionScreen(DecisionMaker decisionMaker) {
     switch (currentDecisionThemeID.value) {
       case 0:
-        return DecidePageWheel(decisionMakerIndex: index);
+        return DecidePageWheel(decisionMaker: decisionMaker);
       case 1:
-        return DecidePageClassic(decisionMakerIndex: index);
+        return DecidePageClassic(decisionMaker: decisionMaker);
       default:
-        return DecidePageWheel(decisionMakerIndex: index);
+        return DecidePageWheel(decisionMaker: decisionMaker);
     }
   }
 

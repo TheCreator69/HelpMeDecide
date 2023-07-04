@@ -1,29 +1,22 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:helpmedecide/model/controllers.dart';
 import 'package:helpmedecide/model/types.dart';
 
 class DecisionSession {
-  DecisionSession({required this.decisionMakerIndex});
-
-  final decisionMakersController = Get.find<DecisionMakersController>();
-  int decisionMakerIndex;
+  DecisionMaker decisionMaker;
 
   int decisionIndex = 0;
   List<int> previousDecisions = [];
 
-  DecisionMaker getDecisionMaker() {
-    return decisionMakersController.getDecisionMakerAt(decisionMakerIndex);
-  }
+  DecisionSession({required this.decisionMaker});
 
   void makeDecision() {
     decisionIndex = _getRandomDecisionIndex();
   }
 
   int _getRandomDecisionIndex() {
-    int maxDecisions = getDecisionMaker().getAmountOfDecisions();
+    int maxDecisions = decisionMaker.getAmountOfDecisions();
 
     int index = -1;
     do {
@@ -38,8 +31,8 @@ class DecisionSession {
     return index;
   }
 
-  String getDecisionText(BuildContext context) {
-    return getDecisionMaker().getDecisionAt(decisionIndex);
+  String getDecisionText() {
+    return decisionMaker.getDecisionAt(decisionIndex);
   }
 }
 

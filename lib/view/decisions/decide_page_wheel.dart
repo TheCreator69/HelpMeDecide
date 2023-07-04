@@ -5,13 +5,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:helpmedecide/model/controllers.dart';
 import 'package:helpmedecide/model/sessions.dart';
+import 'package:helpmedecide/model/types.dart';
 
 class DecidePageWheel extends StatefulWidget {
-  DecidePageWheel({super.key, required this.decisionMakerIndex}) {
-    decisionSession = DecisionSession(decisionMakerIndex: decisionMakerIndex);
+  DecidePageWheel({super.key, required this.decisionMaker}) {
+    decisionSession = DecisionSession(decisionMaker: decisionMaker);
   }
 
-  final int decisionMakerIndex;
+  final DecisionMaker decisionMaker;
   late final DecisionSession decisionSession;
 
   @override
@@ -37,7 +38,7 @@ class _DecidePageWheelState extends State<DecidePageWheel> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.decisionSession.getDecisionMaker().title),
+          title: Text(widget.decisionMaker.title),
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -49,7 +50,7 @@ class _DecidePageWheelState extends State<DecidePageWheel> {
             Text(
               decisionMade
                   ? (canPressDecisionButton
-                      ? widget.decisionSession.getDecisionText(context)
+                      ? widget.decisionSession.getDecisionText()
                       : AppLocalizations.of(context)!
                           .decidePageWheelDecisionInProgress)
                   : AppLocalizations.of(context)!.decidePageNoDecisionYet,
@@ -65,7 +66,7 @@ class _DecidePageWheelState extends State<DecidePageWheel> {
                   const EdgeInsets.symmetric(vertical: 0.0, horizontal: 16.0),
               child: AnimatedWheel(
                 key: _wheelStateKey,
-                decisionMakerIndex: widget.decisionMakerIndex,
+                decisionMaker: widget.decisionMaker,
                 enableButton: enableDecisionButton,
               ),
             ),
@@ -89,9 +90,7 @@ class _DecidePageWheelState extends State<DecidePageWheel> {
                               _wheelStateKey.currentState?.playSpinAnimation(
                                   oldDecisionIndex,
                                   widget.decisionSession.decisionIndex,
-                                  widget.decisionSession
-                                      .getDecisionMaker()
-                                      .getAmountOfDecisions());
+                                  widget.decisionMaker.getAmountOfDecisions());
                             });
                           }
                         : null,
@@ -112,11 +111,9 @@ class _DecidePageWheelState extends State<DecidePageWheel> {
 
 class AnimatedWheel extends StatefulWidget {
   const AnimatedWheel(
-      {super.key,
-      required this.decisionMakerIndex,
-      required this.enableButton});
+      {super.key, required this.decisionMaker, required this.enableButton});
 
-  final int decisionMakerIndex;
+  final DecisionMaker decisionMaker;
   final VoidCallback enableButton;
 
   @override
@@ -190,16 +187,17 @@ class _AnimatedWheelState extends State<AnimatedWheel>
   Widget build(BuildContext context) {
     return RotationTransition(
       turns: _rotationAnimation,
-      child: WheelBuilder(decisionMakerIndex: widget.decisionMakerIndex),
+      child: WheelBuilder(decisionMaker: widget.decisionMaker),
     );
   }
 }
 
 class WheelBuilder extends StatelessWidget {
-  WheelBuilder({super.key, required this.decisionMakerIndex}) {
-    int decisionCount = decisionMakersController
-        .getDecisionMakerAt(decisionMakerIndex)
-        .getAmountOfDecisions();
+  final decisionMakersController = Get.find<DecisionMakersController>();
+  final DecisionMaker decisionMaker;
+
+  WheelBuilder({super.key, required this.decisionMaker}) {
+    int decisionCount = decisionMaker.getAmountOfDecisions();
 
     if (decisionCount % 5 == 1) {
       chosenColors = List<Color>.from(colorPalette).sublist(0, 4);
@@ -207,10 +205,8 @@ class WheelBuilder extends StatelessWidget {
       chosenColors = List<Color>.from(colorPalette).sublist(0, 5);
     }
 
-    shortenedDecisions = List<String>.from(decisionMakersController
-            .getDecisionMakerAt(decisionMakerIndex)
-            .getDecisions())
-        .map((decision) {
+    shortenedDecisions =
+        List<String>.from(decisionMaker.getDecisions()).map((decision) {
       if (decision.length < 15) {
         return decision;
       } else {
@@ -218,9 +214,6 @@ class WheelBuilder extends StatelessWidget {
       }
     }).toList();
   }
-
-  final decisionMakersController = Get.find<DecisionMakersController>();
-  final int decisionMakerIndex;
 
   final List<Color> colorPalette = [
     Colors.red,
@@ -237,9 +230,7 @@ class WheelBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomPaint(
       painter: WheelPainter(
-        sections: decisionMakersController
-            .getDecisionMakerAt(decisionMakerIndex)
-            .getAmountOfDecisions(),
+        sections: decisionMaker.getAmountOfDecisions(),
         sectionColors: chosenColors,
         sectionLabels: shortenedDecisions,
       ),
