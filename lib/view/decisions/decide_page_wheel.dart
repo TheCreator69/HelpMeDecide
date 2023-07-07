@@ -285,12 +285,17 @@ class WheelPainter extends CustomPainter {
 
       final offsetPercentageFromCenter =
           clampDouble(sections / 32.0, 0.1, 0.25);
-      final textX =
-          centerX + radius * offsetPercentageFromCenter * cos(labelAngle - 0.2);
-      final textY =
-          centerY + radius * offsetPercentageFromCenter * sin(labelAngle - 0.2);
+      final textX = centerX +
+          radius *
+              offsetPercentageFromCenter *
+              cos(labelAngle - sectionAngle * 0.28);
+      final textY = centerY +
+          radius *
+              offsetPercentageFromCenter *
+              sin(labelAngle - sectionAngle * 0.28);
 
-      while (textPainter.width >= radius * (1 - offsetPercentageFromCenter)) {
+      while (
+          textPainter.width >= radius * (1 - offsetPercentageFromCenter) - 20) {
         label = label.characters.take(label.characters.length - 1).toString();
         String paintLabel = "$label...";
         textPainter.text = getWheelTextSpan(paintLabel);
