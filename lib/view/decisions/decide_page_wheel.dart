@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
@@ -206,17 +207,6 @@ class WheelBuilder extends StatelessWidget {
     } else {
       chosenColors = List<Color>.from(colorPalette).sublist(0, 5);
     }
-
-    shortenedDecisions = List<String>.from(decisionMakersController
-            .getDecisionMakerAt(decisionMakerIndex)
-            .getDecisions())
-        .map((decision) {
-      if (decision.length < 15) {
-        return decision;
-      } else {
-        return "${decision.substring(0, 15)}...";
-      }
-    }).toList();
   }
 
   final decisionMakersController = Get.find<DecisionMakersController>();
@@ -241,7 +231,9 @@ class WheelBuilder extends StatelessWidget {
             .getDecisionMakerAt(decisionMakerIndex)
             .getAmountOfDecisions(),
         sectionColors: chosenColors,
-        sectionLabels: shortenedDecisions,
+        sectionLabels: decisionMakersController
+            .getDecisionMakerAt(decisionMakerIndex)
+            .getDecisions(),
       ),
     );
   }
@@ -282,19 +274,28 @@ class WheelPainter extends CustomPainter {
         ..color = sectionColors[i % sectionColors.length];
       canvas.drawPath(circleSegment, segmentColor);
 
-      final label = sectionLabels[i % sectionLabels.length];
+      String label = sectionLabels[i % sectionLabels.length];
       final labelAngle = startAngle + sectionAngle / 2;
 
       final textPainter = TextPainter(
-        text: TextSpan(
-          text: label,
-          style: const TextStyle(color: Colors.white, fontSize: 16),
-        ),
+        text: getWheelTextSpan(label),
         textDirection: TextDirection.ltr,
       );
       textPainter.layout();
-      final textX = centerX + radius * 0.25 * cos(labelAngle - 0.25);
-      final textY = centerY + radius * 0.25 * sin(labelAngle - 0.25);
+
+      final offsetPercentageFromCenter =
+          clampDouble(sections / 32.0, 0.1, 0.25);
+      final textX =
+          centerX + radius * offsetPercentageFromCenter * cos(labelAngle - 0.2);
+      final textY =
+          centerY + radius * offsetPercentageFromCenter * sin(labelAngle - 0.2);
+
+      while (textPainter.width >= radius * (1 - offsetPercentageFromCenter)) {
+        label = label.characters.take(label.characters.length - 1).toString();
+        String paintLabel = "$label...";
+        textPainter.text = getWheelTextSpan(paintLabel);
+        textPainter.layout();
+      }
 
       canvas.save();
       canvas.translate(textX, textY);
@@ -304,6 +305,13 @@ class WheelPainter extends CustomPainter {
 
       canvas.restore();
     }
+  }
+
+  TextSpan getWheelTextSpan(String label) {
+    return TextSpan(
+      text: label,
+      style: const TextStyle(color: Colors.white, fontSize: 16),
+    );
   }
 
   @override
