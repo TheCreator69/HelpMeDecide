@@ -129,8 +129,11 @@ class _EditPageState extends State<EditPage> {
                                         textColor: Theme.of(context).hintColor,
                                         onTap: () {
                                           _listKey.currentState?.insertItem(
-                                              widget.editSession
-                                                  .decisionControllers.length);
+                                            widget.editSession
+                                                .decisionControllers.length,
+                                            duration: const Duration(
+                                                milliseconds: 150),
+                                          );
                                           widget.editSession
                                               .addDecisionController();
                                           setState(() {});
@@ -256,6 +259,7 @@ class _DecisionListFormFieldState extends State<DecisionListFormField> {
                         onPressed: () {
                           AnimatedList.of(context).removeItem(
                               widget.index,
+                              duration: const Duration(milliseconds: 150),
                               (context, animation) => SlideTransition(
                                   position: animation.drive(Tween(
                                       begin: const Offset(1, 0),
