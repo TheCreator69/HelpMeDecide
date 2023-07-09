@@ -283,16 +283,11 @@ class WheelPainter extends CustomPainter {
       );
       textPainter.layout();
 
-      final offsetPercentageFromCenter =
-          clampDouble(sections / 32.0, 0.1, 0.25);
+      const offsetPercentageFromCenter = 0.25;
       final textX = centerX +
-          radius *
-              offsetPercentageFromCenter *
-              cos(labelAngle - sectionAngle * 0.28);
+          radius * offsetPercentageFromCenter * cos(labelAngle - 0.22);
       final textY = centerY +
-          radius *
-              offsetPercentageFromCenter *
-              sin(labelAngle - sectionAngle * 0.28);
+          radius * offsetPercentageFromCenter * sin(labelAngle - 0.22);
 
       while (
           textPainter.width >= radius * (1 - offsetPercentageFromCenter) - 20) {
